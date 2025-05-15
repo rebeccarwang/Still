@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ReflectionPreference {
+  weekly
+  biweekly
+  monthly
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @unique
+  password String
+  firstName String
+  lastName String
+  reflectionPref ReflectionPreference @default(weekly)
+  createdAt DateTime @default(now())
+
+  journalEntries JournalEntry[]
+  moodCheckIns MoodCheckIn[]
+  createdCopingStrategies CopingStrategy[]
+  userCopingStrategies UserCopingStrategy[]
+  createdSelfCare SelfCare[]
+  userSelfCare UserSelfCare[]
+  createdSelfAffirmations SelfAffirmation[]
+  userSelfAffirmations UserSelfAffirmation[]
+}
+
+model JournalEntry {
+  id Int @id @default(autoincrement())
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  content String
+  sentimentScore Float?
+
+  tags EntryTagMap[]
+}
+
+model Tag {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  entries EntryTagMap[]
+}
+
+model EntryTagMap {
+  entryId Int
+  tagId Int
+  entry JournalEntry @relation(fields: [entryId], references: [id])
+  tag Tag @relation(fields: [tagId], references: [id])
+  @@id([entryId, tagId])
+}
+
+model MoodCheckIn {
+  id Int @id @default(autoincrement())
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  moodScore Float
+  createdAt DateTime @default(now())
+}
+
+model CopingStrategy {
+  id Int @id @default(autoincrement())
+  content String
+  createdById Int?
+  isPrivate Boolean @default(true)
+  createdAt DateTime @default(now())
+  createdBy User? @relation(fields: [createdById], references: [id])
+
+  copingStrategyUsers UserCopingStrategy[]
+}
+
+model UserCopingStrategy {
+  userId Int
+  strategyId Int
+  user User @relation(fields: [userId], references: [id])
+  strategy CopingStrategy @relation(fields: [strategyId], references: [id])
+  @@id([userId, strategyId])
+  createdAt DateTime @default(now())
+}
+
+model SelfCare {
+  id Int @id @default(autoincrement())
+  content String
+  createdById Int?
+  isPrivate Boolean @default(true)
+  createdAt DateTime @default(now())
+  createdBy User? @relation(fields: [createdById], references: [id])
+
+  selfCareUsers UserSelfCare[]
+}
+
+model UserSelfCare {
+  userId Int
+  selfCareId Int
+  user User @relation(fields: [userId], references: [id])
+  selfCare SelfCare @relation(fields: [selfCareId], references: [id])
+  @@id([userId, selfCareId])
+  createdAt DateTime @default(now())
+
+}
+
+model SelfAffirmation {
+  id Int @id @default(autoincrement())
+  content String
+  createdById Int?
+  isPrivate Boolean @default(true)
+  createdAt DateTime @default(now())
+  createdBy User? @relation(fields: [createdById], references: [id])
+
+  selfAffirmationUsers UserSelfAffirmation[]
+}
+
+model UserSelfAffirmation {
+  userId Int
+  selfAffirmationId Int
+  user User @relation(fields: [userId], references: [id])
+  selfAffirmation SelfAffirmation @relation(fields: [selfAffirmationId], references: [id])
+  @@id([userId, selfAffirmationId])
+  createdAt DateTime @default(now())
+}

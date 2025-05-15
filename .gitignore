@@ -25,6 +25,9 @@ client/build
 .pnp
 .pnp.js
 
+# prisma
+generated/prisma/
+
 # troubleshooting
 npm-debug.log*
 yarn-debug.log*
