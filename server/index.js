@@ -1,25 +1,95 @@
+require('dotenv').config();
 const {PrismaClient} = require('../generated/prisma');
 const prisma = new PrismaClient();
+
 const express = require('express');
 const app = express();
 const cors = require('cors');
+
 const bcrypt = require('bcrypt');
-require('dotenv').config();
 const {Pool} = require('pg');
+
+const session = require('express-session');
 
 app.use(cors());
 app.use(express.json());
 
-// creates new user
+// use session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  saveUninitialized: false,
+  resave: false,
+  cookie: {
+    maxAge: 1000*60*60*3,
+    httpOnly: true
+  }
+}))
+
+// testing if authenticated
+function isAuthenticated (req, res, next) {
+  if (req.session.isLoggedIn) {
+    next();
+  }
+  else {
+    res.status(401).json({error: 'Must be logged in to view content'});
+  }
+}
+
+app.post('/login', async (req, res) => {
+  const {username, password} = req.body;
+
+  // check user inputs username and password
+  if (!username || !password) {
+    return res.status(400).json({error: 'Must input both username and password'});
+  }
+
+  // check if username exists
+  const user = await prisma.user.findUnique({
+    where: {username: username}
+  });
+  if (!user) {
+    return res.status(401).json({error: 'Enter valid username'});
+  }
+
+  // check if username and password match
+  const isPasswordCorrect = await isCorrectPassword(password, user.password);
+  if (!isPasswordCorrect) {
+    return res.status(401).json({error: 'Username and password do not match'});
+  }
+
+  // if user name and password valid
+  req.session.isLoggedIn = true;
+  req.session.userId = user.id;
+  req.session.firstName = user.firstName;
+  return res.status(200).json({message: 'Login successful'});
+})
+
+// logout
+app.get('/logout', (req, res, next) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error while logging out:', err);
+      return res.status(500).json({error: 'Logout failed'});
+    }
+    res.status(200).json({message: 'Logout successful'});
+  })
+})
+
+// home page
+app.get('/home', isAuthenticated, (req, res) => {
+  res.json({message: `Welcome, ${req.session.firstName}!`});
+})
+
+// create new user
 app.post('/post_new_user', async (req, res) => {
   const {username, password, firstName, lastName} = req.body;
 
-  // checks that all required input fields exist
+  // check that all required input fields exist
   if (!username || !password || !firstName || !lastName || password.length < 8) {
     return res.status(400).json({error: 'Must input all required fields, following specifications'});
   }
 
-  // checks username isn't already taken
+  // check username isn't already taken
   const isExistingUser = await prisma.user.findUnique({
     where: {username: username}
   });
@@ -27,7 +97,7 @@ app.post('/post_new_user', async (req, res) => {
     return res.status(400).json({error: 'Username is already taken.'});
   }
 
-  // creates user if password meets length requirements and can be hashed
+  // create user if password meets length requirements and can be hashed
   try {
     const hashedPassword = await createPassword(password);
     const post = await prisma.user.create({
