@@ -20,7 +20,7 @@ function SignupPage() {
       )
 
       if (res.ok) {
-        navigate('/home');
+        navigate('/');
       }
       else {
         const resJson = await res.json();
