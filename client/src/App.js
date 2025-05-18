@@ -1,20 +1,18 @@
-import axios from 'axios';
-import './App.css';
-
-const apiCall = () => {
-  axios.get('http://localhost:8080').then((data) => {
-    console.log(data)
-  })
-}
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import SignupPage from './pages/SignupPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={apiCall}>Make API Call</button>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<LoginPage />} />
+        <Route path='/home' element={<HomePage />} />
+        <Route path='/signup' element={<SignupPage />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;

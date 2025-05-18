@@ -35,26 +35,27 @@ function isAuthenticated (req, res, next) {
   }
 }
 
+// login
 app.post('/login', async (req, res) => {
-  const {username, password} = req.body;
+  const {email, password} = req.body;
 
-  // check user inputs username and password
-  if (!username || !password) {
-    return res.status(400).json({error: 'Must input both username and password'});
+  // check user inputs email and password
+  if (!email || !password) {
+    return res.status(400).json({error: 'Must input both email and password'});
   }
 
-  // check if username exists
+  // check if email exists
   const user = await prisma.user.findUnique({
-    where: {username: username}
+    where: {email: email}
   });
   if (!user) {
-    return res.status(401).json({error: 'Enter valid username'});
+    return res.status(401).json({error: 'Enter valid email'});
   }
 
-  // check if username and password match
+  // check if email and password match
   const isPasswordCorrect = await isCorrectPassword(password, user.password);
   if (!isPasswordCorrect) {
-    return res.status(401).json({error: 'Username and password do not match'});
+    return res.status(401).json({error: 'email and password do not match'});
   }
 
   // if user name and password valid
@@ -82,19 +83,19 @@ app.get('/home', isAuthenticated, (req, res) => {
 
 // create new user
 app.post('/post_new_user', async (req, res) => {
-  const {username, password, firstName, lastName} = req.body;
+  const {email, password, firstName, lastName} = req.body;
 
   // check that all required input fields exist
-  if (!username || !password || !firstName || !lastName || password.length < 8) {
+  if (!email || !password || !firstName || !lastName || password.length < 8) {
     return res.status(400).json({error: 'Must input all required fields, following specifications'});
   }
 
-  // check username isn't already taken
+  // check email isn't already taken
   const isExistingUser = await prisma.user.findUnique({
-    where: {username: username}
+    where: {email: email}
   });
   if (isExistingUser) {
-    return res.status(400).json({error: 'Username is already taken.'});
+    return res.status(400).json({error: 'Email is already in use.'});
   }
 
   // create user if password meets length requirements and can be hashed
@@ -102,7 +103,7 @@ app.post('/post_new_user', async (req, res) => {
     const hashedPassword = await createPassword(password);
     const post = await prisma.user.create({
       data: {
-        username,
+        email,
         password: hashedPassword,
         firstName,
         lastName}
