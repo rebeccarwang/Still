@@ -1,11 +1,14 @@
 import { useForm } from 'react-hook-form';
 import {useNavigate, Link} from 'react-router-dom';
 import {useState} from 'react';
+import {useAuth} from '../hooks/AuthContext.js';
 
-function LoginPage () {
+export default function LoginPage () {
   const {register, handleSubmit, formState: { errors }} = useForm();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
+  const {login} = useAuth();
+
   const onSubmit = async (data) => {
     // console.log(data);
     try {
@@ -19,6 +22,9 @@ function LoginPage () {
       )
 
       if (res.ok) {
+        const resJson = await res.json();
+        const {isLoggedIn, userId, firstName} = resJson;
+        login({isLoggedIn, userId, firstName});
         navigate('/home');
       }
       else {
@@ -84,5 +90,3 @@ function LoginPage () {
     </>
   );
 }
-
-export default LoginPage;

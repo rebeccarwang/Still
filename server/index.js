@@ -11,7 +11,10 @@ const {Pool} = require('pg');
 
 const session = require('express-session');
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json());
 
 // use session middleware
@@ -62,7 +65,7 @@ app.post('/login', async (req, res) => {
   req.session.isLoggedIn = true;
   req.session.userId = user.id;
   req.session.firstName = user.firstName;
-  return res.status(200).json({message: 'Login successful'});
+  return res.status(200).json({message: 'Login successful', isLoggedIn: true, userId: req.session.userId, firstName: req.session.firstName});
 })
 
 // logout

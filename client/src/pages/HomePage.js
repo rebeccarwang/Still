@@ -1,5 +1,11 @@
-function HomePage() {
-  return <h1>Home Page</h1>
-}
+import {useAuth} from '../hooks/AuthContext';
 
-export default HomePage;
+export default function HomePage() {
+  const {user} = useAuth();
+
+  return (
+    <>
+    <h1>Welcome, {user.firstName}!</h1>
+    </>
+  );
+}

@@ -3,7 +3,7 @@ import {useNavigate, Link} from 'react-router-dom';
 import {useState} from 'react';
 
 
-function SignupPage() {
+export default function SignupPage() {
   const {register, handleSubmit, formState: { errors }} = useForm();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
@@ -120,5 +120,3 @@ function SignupPage() {
     </>
   );
 }
-
-export default SignupPage;
