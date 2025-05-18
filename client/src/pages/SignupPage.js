@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
-import {useNavigate} from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import {useNavigate, Link} from 'react-router-dom';
 import {useState} from 'react';
 
 
@@ -35,23 +35,23 @@ function SignupPage() {
   }
   return (
     <>
-      <form className="App" onSubmit={handleSubmit(onSubmit)}>
+      <form className='signup-form' onSubmit={handleSubmit(onSubmit)}>
 
-        <h1 className="register-title">Registration Form</h1>
+        <h1 className='register-title'>Create an Account</h1>
 
         <div className='register-first-name'>
           <input
-            type="text"
-            placeholder="First Name"
-            {...register("firstName", {
-              required: "first name is required",
+            type='text'
+            placeholder='First Name'
+            {...register('firstName', {
+              required: 'first name is required',
               minLength: {
                 value: 1,
-                message: "must be at least 1 character",
+                message: 'must be at least 1 character',
               },
               maxLength: {
                 value: 30,
-                message: "character limit exceeded",
+                message: 'character limit exceeded',
               },
             })}
           />
@@ -60,17 +60,17 @@ function SignupPage() {
 
         <div className='register-last-name'>
           <input
-            type="text"
-            placeholder="Last Name"
-            {...register("lastName", {
-              required: "last name is required",
+            type='text'
+            placeholder='Last Name'
+            {...register('lastName', {
+              required: 'last name is required',
               minLength: {
                 value: 1,
-                message: "must be at least 1 character",
+                message: 'must be at least 1 character',
               },
               maxLength: {
                 value: 30,
-                message: "character limit exceeded",
+                message: 'character limit exceeded',
               },
             })}
           />
@@ -79,13 +79,13 @@ function SignupPage() {
 
         <div className='register-email'>
           <input
-            type="text"
-            placeholder="Email"
-            {...register("email", {
-              required: "email is required",
+            type='text'
+            placeholder='Email'
+            {...register('email', {
+              required: 'email is required',
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: "email format does not match expected",
+                message: 'email format does not match expected',
               },
             })}
           />
@@ -94,17 +94,17 @@ function SignupPage() {
 
         <div className='register-password'>
           <input
-            type="password"
-            placeholder="Password"
-            {...register("password", {
-              required: "password is required",
+            type='password'
+            placeholder='Password'
+            {...register('password', {
+              required: 'password is required',
               minLength: {
                 value: 8,
-                message: "must be at least 8 characters",
+                message: 'must be at least 8 characters',
               },
               maxLength: {
                 value: 30,
-                message: "character limit exceeded",
+                message: 'character limit exceeded',
               },
             })}
           />
@@ -112,10 +112,11 @@ function SignupPage() {
         </div>
 
         <div>
-          <input type="submit" style={{ backgroundColor: "#33c7ff" }} />
+          <input type='submit' style={{ backgroundColor: '#33c7ff' }} />
         </div>
         {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
       </form>
+      Already have an account? Login <Link to='/'>here</Link>
     </>
   );
 }

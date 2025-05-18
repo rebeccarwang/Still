@@ -49,13 +49,13 @@ app.post('/login', async (req, res) => {
     where: {email: email}
   });
   if (!user) {
-    return res.status(401).json({error: 'Enter valid email'});
+    return res.status(401).json({error: 'The email or password you entered is incorrect'});
   }
 
   // check if email and password match
   const isPasswordCorrect = await isCorrectPassword(password, user.password);
   if (!isPasswordCorrect) {
-    return res.status(401).json({error: 'email and password do not match'});
+    return res.status(401).json({error: 'The email or password you entered is incorrect'});
   }
 
   // if user name and password valid
