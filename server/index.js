@@ -79,9 +79,13 @@ app.get('/logout', (req, res, next) => {
   })
 })
 
-// home page
-app.get('/home', isAuthenticated, (req, res) => {
-  res.json({message: `Welcome, ${req.session.firstName}!`});
+// session info
+app.get('/session', isAuthenticated, (req, res) => {
+  return res.status(200).json({
+    isLoggedIn: true,
+    firstName: req.session.firstName,
+    userId: req.session.userId
+  })
 })
 
 // create new user
