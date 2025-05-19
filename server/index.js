@@ -69,7 +69,7 @@ app.post('/login', async (req, res) => {
 })
 
 // logout
-app.get('/logout', (req, res, next) => {
+app.post('/logout', (req, res, next) => {
   req.session.destroy((err) => {
     if (err) {
       console.error('Error while logging out:', err);
