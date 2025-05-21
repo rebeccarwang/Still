@@ -7,6 +7,8 @@ export default function SignupPage() {
   const {register, handleSubmit, formState: { errors }} = useForm();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
+
+  // handle user signup after form submission
   const onSubmit = async (data) => {
     // console.log(data);
     try {

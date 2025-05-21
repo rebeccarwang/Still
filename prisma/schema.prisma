@@ -46,6 +46,7 @@ model JournalEntry {
   createdAt DateTime @default(now())
   content String
   sentimentScore Float?
+  moodAtTimeOfEntry Float?
 
   tags EntryTagMap[]
 }
@@ -55,6 +56,7 @@ model Tag {
   name String @unique
 
   entries EntryTagMap[]
+  moodCheckIns MoodCheckInTagMap[]
 }
 
 model EntryTagMap {
@@ -71,6 +73,16 @@ model MoodCheckIn {
   user User @relation(fields: [userId], references: [id])
   moodScore Float
   createdAt DateTime @default(now())
+
+  tags MoodCheckInTagMap[]
+}
+
+model MoodCheckInTagMap {
+  moodCheckInId Int
+  tagId Int
+  moodCheckIn MoodCheckIn @relation(fields: [moodCheckInId], references: [id])
+  tag Tag @relation(fields: [tagId], references: [id])
+  @@id([moodCheckInId, tagId])
 }
 
 model CopingStrategy {

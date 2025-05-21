@@ -9,6 +9,7 @@ export default function LoginPage () {
   const [serverError, setServerError] = useState('');
   const {login} = useAuth();
 
+  // handle login logic after form submission
   const onSubmit = async (data) => {
     // console.log(data);
     try {
