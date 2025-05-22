@@ -65,7 +65,8 @@ app.post('/login', async (req, res) => {
   req.session.isLoggedIn = true;
   req.session.userId = user.id;
   req.session.firstName = user.firstName;
-  return res.status(200).json({message: 'Login successful', isLoggedIn: true, userId: req.session.userId, firstName: req.session.firstName});
+  req.session.hasCompletedOnboarding = user.hasCompletedOnboarding;
+  return res.status(200).json({message: 'Login successful', isLoggedIn: true, userId: req.session.userId, firstName: req.session.firstName, hasCompletedOnboarding: req.session.hasCompletedOnboarding});
 })
 
 // logout
@@ -148,6 +149,63 @@ async function isCorrectPassword(userInput, hashedPassword) {
   return false;
 }
 
+
+// get all app-wide, public self-care items
+app.get('/public_self_care_items', async (req, res) => {
+
+  try {
+    const allPublicSelfCare = await prisma.selfCare.findMany({
+      where: {isPrivate: false},
+      select: {
+        content: true
+      },
+      orderBy: {content: 'asc'}
+    });
+
+    return res.status(200).json(allPublicSelfCare);
+  }
+  catch (err) {
+    return res.status(500).json({error: 'Failed to fetch public self-care strategies'})
+  }
+})
+
+// get all app-wide, public coping strategies
+app.get('/public_coping_strategies', async (req, res) => {
+
+  try {
+    const allPublicCopingStrategies = await prisma.copingStrategy.findMany({
+      where: {isPrivate: false},
+      select: {
+        content: true
+      },
+      orderBy: {content: 'asc'}
+    });
+
+    return res.status(200).json(allPublicCopingStrategies);
+  }
+  catch (err) {
+    return res.status(500).json({error: 'Failed to fetch public self-care strategies'})
+  }
+})
+
+// get all app-wide, public self-affirmation items
+app.get('/public_self_affirmation_items', async (req, res) => {
+
+  try {
+    const allPublicSelfAffirmation = await prisma.selfAffirmation.findMany({
+      where: {isPrivate: false},
+      select: {
+        content: true
+      },
+      orderBy: {content: 'asc'}
+    });
+
+    return res.status(200).json(allPublicSelfAffirmation);
+  }
+  catch (err) {
+    return res.status(500).json({error: 'Failed to fetch public self-care strategies'})
+  }
+})
 
 // connect to PostgreSQL database
 const pool = new Pool({

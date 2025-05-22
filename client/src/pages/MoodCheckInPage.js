@@ -2,7 +2,7 @@ import {useAuth} from '../hooks/AuthContext';
 import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 
-export default function HomePage() {
+export default function MoodCheckInPage() {
   const {user} = useAuth();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');

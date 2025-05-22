@@ -25,9 +25,18 @@ export default function LoginPage () {
 
       if (res.ok) {
         const resJson = await res.json();
-        const {isLoggedIn, userId, firstName} = resJson;
+        const {isLoggedIn, userId, firstName, hasCompletedOnboarding} = resJson;
         login({isLoggedIn, userId, firstName});
-        navigate('/home');
+
+        // navigate to MoodCheckInPage if not new user
+        if (hasCompletedOnboarding) {
+          navigate('/check-in');
+        }
+
+        // navigate to PreferenceSetupPage if new user
+        else {
+          navigate('/setup/preferences');
+        }
       }
       else {
         const resJson = await res.json();
@@ -51,6 +60,7 @@ export default function LoginPage () {
           <input
             type='text'
             placeholder='Email'
+            autoComplete='username'
             {...register('email', {
               required: 'email is required',
               pattern: {
@@ -66,6 +76,7 @@ export default function LoginPage () {
           <input
             type='password'
             placeholder='Password'
+            autoComplete='current-password'
             {...register('password', {
               required: 'password is required',
               minLength: {

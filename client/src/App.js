@@ -1,6 +1,7 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
-import HomePage from './pages/HomePage';
+import MoodCheckInPage from './pages/MoodCheckInPage';
+import PreferenceSetupPage from './pages/PreferenceSetupPage';
 import SignupPage from './pages/SignupPage';
 import {AuthProvider} from './hooks/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -11,7 +12,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<LoginPage />} />
-          <Route path='/home' element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+          <Route path='/check-in' element={<ProtectedRoute><MoodCheckInPage /></ProtectedRoute>} />
+          <Route path='/setup/preferences' element={<ProtectedRoute><PreferenceSetupPage /></ProtectedRoute>} />
+          {/* <Route path='/setup/preferences/self-care' element={<ProtectedRoute><SelfCarePage /></ProtectedRoute>} /> */}
+          {/* <Route path='/setup/preferences/coping' element={<ProtectedRoute><CopingPage /></ProtectedRoute>} />
+          <Route path='/setup/preferences/affirmations' element={<ProtectedRoute><AffirmationPage /></ProtectedRoute>} /> */}
           <Route path='/signup' element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
