@@ -24,15 +24,15 @@ export default function PreferenceSetupPage() {
   useEffect(() => {
     const fetchPublicSelfCareStrategies = async () => {
       try {
-        const resSelfCare = await fetch('http://localhost:8080/public_self_care_items', {
+        const resSelfCare = await fetch('http://localhost:8080/api/self-care/public', {
           credentials: 'include',
         });
 
-        const resAffirmations = await fetch('http://localhost:8080/public_self_affirmation_items', {
+        const resAffirmations = await fetch('http://localhost:8080/api/affirmations/public', {
           credentials: 'include',
         });
 
-        const resCoping = await fetch('http://localhost:8080/public_coping_strategies', {
+        const resCoping = await fetch('http://localhost:8080/api/coping-strategies/public', {
           credentials: 'include',
         });
 
@@ -75,7 +75,7 @@ export default function PreferenceSetupPage() {
   // user logout functionality
   const logoutUser = async (user) => {
     try {
-      const res = await fetch('http://localhost:8080/logout', {
+      const res = await fetch('http://localhost:8080/api/auth/logout', {
         method: 'POST',
         credentials: 'include'
       }
@@ -110,7 +110,7 @@ export default function PreferenceSetupPage() {
 
     try {
       // add self-care items to tables in databases
-      const selfCareAdditions = await fetch('http://localhost:8080/post_new_self_care', {
+      const selfCareAdditions = await fetch('http://localhost:8080/api/self-care/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -120,7 +120,7 @@ export default function PreferenceSetupPage() {
       });
 
       // add coping items to tables in databases
-      const copingAdditions = await fetch('http://localhost:8080/post_new_coping', {
+      const copingAdditions = await fetch('http://localhost:8080/api/coping-strategies/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -130,7 +130,7 @@ export default function PreferenceSetupPage() {
       });
 
       // add affirmations to tables in databases
-      const affirmationAdditions = await fetch('http://localhost:8080/post_new_affirmations', {
+      const affirmationAdditions = await fetch('http://localhost:8080/api/affirmations/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -140,7 +140,7 @@ export default function PreferenceSetupPage() {
       });
       console.log('messages', selfCareAdditions.status, copingAdditions.status, affirmationAdditions.status);
       if (selfCareAdditions.ok && copingAdditions.ok && affirmationAdditions.ok) {
-        await fetch('http://localhost:8080/api/user-completed-onboarding', {
+        await fetch('http://localhost:8080/api/users/onboarding-complete', {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

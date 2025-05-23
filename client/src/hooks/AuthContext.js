@@ -17,7 +17,7 @@ export const AuthProvider = ({children}) => {
   useEffect(() => {
     const fetchSession = async () => {
       try {
-        const res = await fetch('http://localhost:8080/session', {
+        const res = await fetch('http://localhost:8080/api/auth/session', {
           credentials: 'include',
         });
 

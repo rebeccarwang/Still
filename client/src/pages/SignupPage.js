@@ -12,7 +12,7 @@ export default function SignupPage() {
   const onSubmit = async (data) => {
     // console.log(data);
     try {
-      const res = await fetch('http://localhost:8080/post_new_user', {
+      const res = await fetch('http://localhost:8080/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

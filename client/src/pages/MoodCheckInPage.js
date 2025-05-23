@@ -6,12 +6,17 @@ export default function MoodCheckInPage() {
   const {user} = useAuth();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
+  const moods = [{emoji: "😄", score: 5},
+    {emoji: "🙂", score: 4},
+    {emoji: "😐", score: 3},
+    {emoji: "😕", score: 2},
+    {emoji: "😔", score: 1}]
 
 
   // user logout functionality
   const logoutUser = async (user) => {
     try {
-      const res = await fetch('http://localhost:8080/logout', {
+      const res = await fetch('http://localhost:8080/api/auth/logout', {
         method: 'POST',
         credentials: 'include'
       }
@@ -35,6 +40,11 @@ export default function MoodCheckInPage() {
   return (
     <>
     <h1>Welcome, {user.firstName}!</h1>
+    <h2>How are you feeling today?</h2>
+    {moods.map(mood => (
+      <button>{mood.emoji}</button>
+    ))}
+    <br/>
     <button onClick={logoutUser}>Logout</button>
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
     </>
