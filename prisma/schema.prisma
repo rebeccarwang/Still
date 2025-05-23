@@ -93,6 +93,7 @@ model CopingStrategy {
   isPrivate Boolean @default(true)
   createdAt DateTime @default(now())
   createdBy User? @relation(fields: [createdById], references: [id])
+  @@unique([createdById, content])
 
   copingStrategyUsers UserCopingStrategy[]
 }
@@ -103,6 +104,7 @@ model UserCopingStrategy {
   user User @relation(fields: [userId], references: [id])
   strategy CopingStrategy @relation(fields: [strategyId], references: [id])
   @@id([userId, strategyId])
+  @@unique([userId, strategyId])
   createdAt DateTime @default(now())
 }
 
@@ -113,6 +115,7 @@ model SelfCare {
   isPrivate Boolean @default(true)
   createdAt DateTime @default(now())
   createdBy User? @relation(fields: [createdById], references: [id])
+  @@unique([createdById, content])
 
   selfCareUsers UserSelfCare[]
 }
@@ -123,6 +126,7 @@ model UserSelfCare {
   user User @relation(fields: [userId], references: [id])
   selfCare SelfCare @relation(fields: [selfCareId], references: [id])
   @@id([userId, selfCareId])
+  @@unique([userId, selfCareId])
   createdAt DateTime @default(now())
 
 }
@@ -134,6 +138,7 @@ model SelfAffirmation {
   isPrivate Boolean @default(true)
   createdAt DateTime @default(now())
   createdBy User? @relation(fields: [createdById], references: [id])
+  @@unique([createdById, content])
 
   selfAffirmationUsers UserSelfAffirmation[]
 }
@@ -144,5 +149,6 @@ model UserSelfAffirmation {
   user User @relation(fields: [userId], references: [id])
   selfAffirmation SelfAffirmation @relation(fields: [selfAffirmationId], references: [id])
   @@id([userId, selfAffirmationId])
+  @@unique([userId, selfAffirmationId])
   createdAt DateTime @default(now())
 }

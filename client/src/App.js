@@ -14,9 +14,6 @@ function App() {
           <Route path='/' element={<LoginPage />} />
           <Route path='/check-in' element={<ProtectedRoute><MoodCheckInPage /></ProtectedRoute>} />
           <Route path='/setup/preferences' element={<ProtectedRoute><PreferenceSetupPage /></ProtectedRoute>} />
-          {/* <Route path='/setup/preferences/self-care' element={<ProtectedRoute><SelfCarePage /></ProtectedRoute>} /> */}
-          {/* <Route path='/setup/preferences/coping' element={<ProtectedRoute><CopingPage /></ProtectedRoute>} />
-          <Route path='/setup/preferences/affirmations' element={<ProtectedRoute><AffirmationPage /></ProtectedRoute>} /> */}
           <Route path='/signup' element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
