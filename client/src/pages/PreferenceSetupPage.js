@@ -2,6 +2,7 @@ import {useAuth} from '../hooks/AuthContext';
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {Autocomplete, TextField} from '@mui/material';
+import LogoutButton from '../components/LogoutButton';
 
 export default function PreferenceSetupPage() {
   const {user} = useAuth();
@@ -71,30 +72,6 @@ export default function PreferenceSetupPage() {
     fetchPublicSelfCareStrategies();
   }, []);
 
-
-  // user logout functionality
-  const logoutUser = async (user) => {
-    try {
-      const res = await fetch('http://localhost:8080/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include'
-      }
-      )
-
-      if (res.ok) {
-        navigate('/');
-      }
-      else {
-        const resJson = await res.json();
-        setServerError(resJson.error || 'Something went wrong');
-        return;
-      }
-    }
-    catch (err) {
-      console.log('Error:', err);
-      setServerError('Something went wrong- try again later');
-    }
-  }
 
   // handle form submission
   async function handleSubmit(event) {
@@ -233,7 +210,7 @@ export default function PreferenceSetupPage() {
       }
       <button type='submit'>Submit</button>
     </form>
-    <button onClick={logoutUser}>Logout</button>
+    <LogoutButton />
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
     </>
   );
