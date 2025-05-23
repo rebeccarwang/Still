@@ -117,7 +117,7 @@ export default function PreferenceSetupPage() {
         },
         body: JSON.stringify({items: userSelfCare}),
         credentials: 'include'
-      })
+      });
 
       // add coping items to tables in databases
       const copingAdditions = await fetch('http://localhost:8080/post_new_coping', {
@@ -127,7 +127,7 @@ export default function PreferenceSetupPage() {
         },
         body: JSON.stringify({items: userCoping}),
         credentials: 'include'
-      })
+      });
 
       // add affirmations to tables in databases
       const affirmationAdditions = await fetch('http://localhost:8080/post_new_affirmations', {
@@ -137,9 +137,16 @@ export default function PreferenceSetupPage() {
         },
         body: JSON.stringify({items: userAffirmations}),
         credentials: 'include'
-      })
+      });
       console.log('messages', selfCareAdditions.status, copingAdditions.status, affirmationAdditions.status);
       if (selfCareAdditions.ok && copingAdditions.ok && affirmationAdditions.ok) {
+        await fetch('http://localhost:8080/api/user-completed-onboarding', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include'
+        });
         navigate('/check-in');
       }
       else {

@@ -366,6 +366,19 @@ app.get('/public_self_affirmation_items', async (req, res) => {
   }
 })
 
+// set user's hasCompletedOnboarding attribute to true
+app.patch('/api/user-completed-onboarding', isAuthenticated, async (req, res) => {
+  try {
+    await prisma.user.update({
+      where: {id: req.session.userId},
+      data: {hasCompletedOnboarding: true}
+    });
+    return res.status(200).json({message: 'User hasCompletedOnboarding attribute successfully updated.'});
+  } catch (err) {
+    return res.status(500).json({error: 'Failed to update user hasCompletedOnboarding attribute.'});
+  }
+})
+
 
 // helper function for user preferences
 // separates selections for each user preference category (i.e., self-care, coping strategies, affirmations)
