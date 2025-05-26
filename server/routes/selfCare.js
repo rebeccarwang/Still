@@ -58,6 +58,29 @@ router.post('/user', isAuthenticated, async (req, res) => {
 })
 
 
+// get all user self-care content
+router.get('/user', isAuthenticated, async (req, res) => {
+  try {
+    const allUserSelfCare = await prisma.userSelfCare.findMany({
+      where: {userId: req.session.userId},
+      include: {
+        selfCare: {
+          select: {
+            content: true
+          }
+        }
+      }
+    });
+    const allUserSelfCareContent = allUserSelfCare.map(item => item.selfCare.content)
+    return res.status(200).json(allUserSelfCareContent);
+  }
+  catch (err) {
+    return res.status(500).json({error: 'Failed to fetch user self-care content'});
+  }
+})
+
+
+
 // get all app-wide, public self-care items
 router.get('/public', async (req, res) => {
 

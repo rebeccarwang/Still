@@ -57,6 +57,29 @@ router.post('/user', isAuthenticated, async (req, res) => {
     }
   })
 
+
+// get all user coping strategies
+router.get('/user', isAuthenticated, async (req, res) => {
+  try {
+    const allUserCoping = await prisma.userCopingStrategy.findMany({
+      where: {userId: req.session.userId},
+      include: {
+        strategy: {
+          select: {
+            content: true
+          }
+        }
+      }
+    });
+    const allUserCopingContent = allUserCoping.map(item => item.strategy.content)
+    return res.status(200).json(allUserCopingContent);
+  }
+  catch (err) {
+    return res.status(500).json({error: 'Failed to fetch user coping strategies'});
+  }
+})
+
+
 // get all app-wide, public coping strategies
 router.get('/public', async (req, res) => {
 
@@ -73,7 +96,7 @@ router.get('/public', async (req, res) => {
     return res.status(200).json(allPublicCopingStrategies);
   }
   catch (err) {
-    return res.status(500).json({error: 'Failed to fetch public self-care strategies'})
+    return res.status(500).json({error: 'Failed to fetch public coping strategies'})
   }
 })
 

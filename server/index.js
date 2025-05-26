@@ -11,6 +11,7 @@ const copingStrategyRoutes = require('./routes/copingStrategies');
 const affirmationRoutes = require('./routes/selfAffirmations');
 const selfCareRoutes = require('./routes/selfCare');
 const userRoutes = require('./routes/users');
+const moodCheckInRoutes = require('./routes/moodCheckIn');
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -36,6 +37,7 @@ app.use('/api/coping-strategies', copingStrategyRoutes);
 app.use('/api/affirmations', affirmationRoutes);
 app.use('/api/self-care', selfCareRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/mood-checkin', moodCheckInRoutes);
 
 
 app.get('/', (req, res) => {

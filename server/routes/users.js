@@ -6,7 +6,7 @@ const {isAuthenticated} = require('../middleware/auth');
 const bcrypt = require('bcrypt');
 
 // create new user
-router.post('', async (req, res) => {
+router.post('/', async (req, res) => {
   const {email, password, firstName, lastName} = req.body;
 
   // check that all required input fields exist

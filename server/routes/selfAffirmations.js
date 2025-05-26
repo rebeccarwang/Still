@@ -57,6 +57,28 @@ router.post('/user', isAuthenticated, async (req, res) => {
 })
 
 
+// get all user affirmations
+router.get('/user', isAuthenticated, async (req, res) => {
+  try {
+    const allUserAffirmations = await prisma.userSelfAffirmation.findMany({
+      where: {userId: req.session.userId},
+      include: {
+        selfAffirmation: {
+          select: {
+            content: true
+          }
+        }
+      }
+    });
+    const allUserAffirmationContent = allUserAffirmations.map(item => item.selfAffirmation.content)
+    return res.status(200).json(allUserAffirmationContent);
+  }
+  catch (err) {
+    return res.status(500).json({error: 'Failed to fetch user affirmations'});
+  }
+})
+
+
 // get all app-wide, public self-affirmation items
 router.get('/public', async (req, res) => {
 
