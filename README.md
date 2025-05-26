@@ -1,19 +1,19 @@
 # Still — A Self-Awareness Companion
 
-**Still** is a privacy-first self-awareness toolkit designed to support users in checking in with their mood, revisiting their personal coping strategies and affirmations, and gently reflecting on their emotional state. Journaling is an optional tool within the app’s flexible, user-led flow.
+**Still** is a self-awareness toolkit designed to support users in checking in with their mood, revisiting their personal coping strategies and affirmations, and gently reflecting on their emotional state. Journaling is an optional tool within the app’s flexible, user-led flow.
 
 ---
 
 ## Project Purpose & Inspiration
 
-In my experience volunteering in mental health support, I have seen how easy it is for individuals to lose sight of what helps them in times of stress. **Still** was built with this insight: that people often know their own best strategies for self-care and resilience, but may forget them when they are most needed.
+During my experience volunteering in mental health support, I have seen how easy it is for individuals to lose sight of what helps them in times of stress. **Still** was built with this insight: that people often know their own best strategies for self-care and resilience, but may forget them when they are most needed.
 
 ---
 
 ##  Work in Progress
 
 This project is **actively in development** and is not yet complete.
-It is intended as a personal learning project and a demonstration of my approach to user-centered design and privacy-first practices.
+It is intended as a personal learning project and a demonstration of my approach to user-centered design and privacy practices.
 
 Currently, the project includes:
 
