@@ -60,7 +60,7 @@ Planned features:
 ## Project Highlights
 
 - **Daily mood check-in** (selecting an emoji)
-- **User-defined preferences library**: coping strategies, self-affirmations, and self-care items
+- **User-defined preferences**: coping strategies, self-affirmations, and self-care items
 - **Branching prompts**:
   - Happy/Neutral moods → optional journaling and category tags
   - Sad moods → choose from self-care, affirmations, coping tools, journaling, or “not today”
