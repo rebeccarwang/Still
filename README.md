@@ -1,6 +1,6 @@
 # Still — A Self-Awareness Companion
 
-** Still ** is a privacy-first self-awareness toolkit designed to support users in checking in with their mood, revisiting their personal coping strategies and affirmations, and gently reflecting on their emotional state. Journaling is an optional tool within the app’s flexible, user-led flow.
+**Still** is a privacy-first self-awareness toolkit designed to support users in checking in with their mood, revisiting their personal coping strategies and affirmations, and gently reflecting on their emotional state. Journaling is an optional tool within the app’s flexible, user-led flow.
 
 ---
 
@@ -27,12 +27,12 @@ Currently, the project includes:
 
 Planned features:
 
-🟡 **Optional journaling** feature
-🟡 **Sentiment analysis** of journal entries
-🟡 **Mismatch detection**: highlight differences between mood and sentiment
-🟡 **Optional tags** for insights and trend tracking
-🟡 **Weekly insights and trends**
-🟡 **Full UI polish and responsive design**
+- **Optional journaling** feature
+- **Sentiment analysis** of journal entries
+- **Mismatch detection**: highlight differences between mood and sentiment
+- **Optional tags** for insights and trend tracking
+- **Weekly insights and trends**
+- **Full UI polish and responsive design**
 
 ---
 
@@ -71,7 +71,7 @@ Planned features:
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend:** React.js
 - **Backend:** Node.js with Express.js API
