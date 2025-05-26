@@ -58,7 +58,7 @@ export default function UserPreferenceViewer() {
     <>
     <h2>Sometimes it's just one of those days. Thanks for checking in. Would you like to add any tags before you go?</h2>
     <button onClick={() => navigate('/check-in')}>No</button>
-    <button onClick={() => navigate('/mood-tags')}>Yes</button>
+    <button onClick={() => navigate('/tags')}>Yes</button>
     </>
     )
     }

@@ -1,5 +1,6 @@
 import {useSearchParams} from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
+import JournalEntryForm from '../components/JournalEntryForm';
 
 
 export default function JournalEntryPage() {
@@ -11,8 +12,8 @@ export default function JournalEntryPage() {
 
   return (
     <>
-    <h1>New Journal Entry</h1>
     <h2>{prompt}</h2>
+    <JournalEntryForm />
     <button onClick={() => navigate(-1)}>Back</button>
     </>
   );
