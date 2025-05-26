@@ -17,13 +17,13 @@ It is intended as a personal learning project and a demonstration of my approach
 
 Currently, the project includes:
 
-✅ Project scaffolding
-✅ Authentication and user management setup
-✅ Database schema for users and mood check-ins
-✅ Early-stage frontend with mood check-in UI
-✅ **User-defined preferences library**: coping strategies, affirmations, and self-care items
-🟡 **Branching prompts** tailored to mood: mostly built
-🟡 **Basic mood-based user flow**: initial flow logic is built and tested
+- Project scaffolding
+- Authentication and user management setup
+- Database schema for users and mood check-ins
+- Early-stage frontend with mood check-in UI
+- **User-defined preferences library**: coping strategies, affirmations, and self-care items
+- **Branching prompts** tailored to mood: mostly built
+- **Basic mood-based user flow**: initial flow logic is built and tested
 
 Planned features:
 
