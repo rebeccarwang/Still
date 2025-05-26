@@ -63,11 +63,11 @@ Planned features:
 - **User-defined preferences library**: coping strategies, self-affirmations, and self-care items
 - **Branching prompts**:
   - Happy/Neutral moods → optional journaling and category tags
-  - Sad/Very Sad moods → choose from self-care, affirmations, coping tools, journaling, or “not today”
+  - Sad moods → choose from self-care, affirmations, coping tools, journaling, or “not today”
 - **Sentiment analysis** of journal entries (planned)
 - **Mismatch detection** (planned)
 - **Optional tags** for insights and trend tracking (planned)
-- **Privacy-first** approach: no external data sharing
+- **Privacy-conscious** approach
 
 ---
 
