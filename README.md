@@ -21,9 +21,9 @@ Currently, the project includes:
 - Authentication and user management setup
 - Database schema for users and mood check-ins
 - Early-stage frontend with mood check-in UI
-- **User-defined preferences library**: coping strategies, affirmations, and self-care items
+- **User-defined preferences**: coping strategies, affirmations, and self-care items
 - **Branching prompts** tailored to mood: mostly built
-- **Basic mood-based user flow**: initial flow logic is built and tested
+- **Basic mood-based user flow**: initial flow logic is mostly built
 
 Planned features:
 
@@ -74,7 +74,7 @@ Planned features:
 ## Tech Stack
 
 - **Frontend:** React.js
-- **Backend:** Node.js with Express.js API
+- **Backend:** Node.js with Express.js
 - **Database:** PostgreSQL (via Prisma)
 - **Authentication:** bcrypt, session
 - **Sentiment Analysis:** Planned using open-source libraries
