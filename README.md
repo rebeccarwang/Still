@@ -6,7 +6,7 @@
 
 ## Project Purpose & Inspiration
 
-During my experience volunteering in mental health support, I have seen how easy it is for individuals to lose sight of what helps them in times of stress. **Still** was built with this insight: that people often know their own best strategies for self-care and resilience, but may forget them when they are most needed.
+During my experience volunteering in mental health support, I have seen how it can be easy for individuals to forget what helps them in times of stress. **Still** was built with this in mind: that people often know their own best strategies for self-care and resilience, but may forget them when they are most needed.
 
 ---
 
@@ -46,7 +46,7 @@ Planned features:
 - The project is a **learning exercise** and is **not guaranteed to meet production-level security or privacy standards**.
 - This project is provided **“as is” without any warranties, express or implied**.
 - Nothing in this project or documentation creates any contractual relationship, duty of care, or professional relationship.
-- The author does not accept any liability for:
+- The author is not liable for:
   - Privacy breaches or data leaks
   - Any harm arising from the use or misuse of this app
   - Accuracy issues in mood or sentiment features
