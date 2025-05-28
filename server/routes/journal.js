@@ -4,7 +4,7 @@ const prisma = require('../utils/db');
 
 const {isAuthenticated} = require('../middleware/auth');
 
-// create new self-care items
+// create new journal entry
 router.post('/entries', isAuthenticated, async (req, res) => {
   const {journalText} = req.body;
 

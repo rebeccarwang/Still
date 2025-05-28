@@ -13,6 +13,7 @@ const selfCareRoutes = require('./routes/selfCare');
 const userRoutes = require('./routes/users');
 const moodCheckInRoutes = require('./routes/moodCheckIn');
 const journalEntryRoutes = require('./routes/journal');
+const tagRoutes = require('./routes/tags');
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -40,6 +41,7 @@ app.use('/api/self-care', selfCareRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/mood-checkin', moodCheckInRoutes);
 app.use('/api/journal', journalEntryRoutes);
+app.use('/api/tags', tagRoutes);
 
 
 app.get('/', (req, res) => {

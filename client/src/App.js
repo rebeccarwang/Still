@@ -7,7 +7,6 @@ import {AuthProvider} from './hooks/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import JournalEntryPage from './pages/JournalEntryPage';
 import UserPreferenceViewer from './pages/UserPreferenceViewer';
-import TagPage from './pages/TagPage';
 import OptionsPage from './pages/OptionsPage';
 
 function App() {
@@ -21,7 +20,6 @@ function App() {
           <Route path='/journal' element={<ProtectedRoute><JournalEntryPage /></ProtectedRoute>} />
           <Route path='/options' element={<ProtectedRoute><OptionsPage /></ProtectedRoute>} />
           <Route path='/options/preference' element={<ProtectedRoute><UserPreferenceViewer /></ProtectedRoute>} />
-          <Route path='/tags' element={<ProtectedRoute><TagPage /></ProtectedRoute>} />
           <Route path='/signup' element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
