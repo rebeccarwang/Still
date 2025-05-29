@@ -36,7 +36,17 @@ router.post('/entries', isAuthenticated, async (req, res) => {
       }
     });
 
-    return res.status(201).json({message: 'Journal entry successfully added.', journalEntryId: newJournalEntry.id});
+    let mismatch = false;
+
+    // check if there's a mismatch between moodAtTimeOfEntry and sentimentScore
+    if ((req.session.mood === 4 || req.session.mood === 5) && sentimentScore < 0.4) {
+      mismatch = true
+    }
+    else if ((req.session.mood === 1 || req.session.mood === 2) && sentimentScore > 0.6) {
+      mismatch = true
+    }
+
+    return res.status(201).json({message: 'Journal entry successfully added.', journalEntryId: newJournalEntry.id, mismatch: mismatch});
   }
   catch (err) {
     console.log('Error:', err);

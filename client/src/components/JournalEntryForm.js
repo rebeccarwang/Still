@@ -1,10 +1,7 @@
-import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import Tags from './Tags';
 
-export default function JournalEntryForm({isSubmitted, setIsSubmitted}) {
-// export default function JournalEntryForm() {
-  const navigate = useNavigate();
+export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatch, setIsMismatch}) {
   const [serverError, setServerError] = useState('');
   const [journalText, setJournalText] = useState('');
   const [isText, setIsText] = useState(false);
@@ -25,7 +22,7 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted}) {
 
       if (res.ok) {
         const resJson = await res.json();
-        return resJson.journalEntryId;
+        return resJson;
         // navigate(`/tags?journalEntryId=${resJson.journalEntryId}`);
       }
       else {
@@ -76,11 +73,11 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted}) {
       setServerError('Please submit a journal entry with some text if desired. Otherwise, feel free to choose another option.');
       return;
     }
-    console.log(tagsUser);
-    let journalEntryId = await postJournalEntry(journalText);
-    let ifTagsPosted = await postTags(tagsUser, journalEntryId);
-    if (journalEntryId && ifTagsPosted) {
-      console.log('Success!');
+    // console.log(tagsUser);
+    let journalEntry = await postJournalEntry(journalText);
+    let ifTagsPosted = await postTags(tagsUser, journalEntry.journalEntryId);
+    if (journalEntry && ifTagsPosted) {
+      setIsMismatch(journalEntry.mismatch);
       setIsSubmitted(true);
     }
   }
