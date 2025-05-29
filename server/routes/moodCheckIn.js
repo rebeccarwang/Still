@@ -23,7 +23,7 @@ router.post('/', isAuthenticated, async (req, res) => {
 
       req.session.mood = score;
 
-      return res.status(201).json({message: 'Mood score successfully added.'});
+      return res.status(201).json({message: 'Mood score successfully added.', moodId: moodInsertion.id});
     }
     catch (err) {
       console.log('Error:', err);
@@ -31,15 +31,16 @@ router.post('/', isAuthenticated, async (req, res) => {
     }
 })
 
-// get current mood
-router.get('/current', isAuthenticated, (req, res) => {
-  const mood = req.session.mood;
 
-  if (!mood) {
-    return res.status(400).json({error: 'No mood was input during this session.'});
-  }
+// // get current mood
+// router.get('/current', isAuthenticated, (req, res) => {
+//   const mood = req.session.mood;
 
-  return res.status(200).json({message: 'Returned current mood.', mood: mood});
-})
+//   if (!mood) {
+//     return res.status(400).json({error: 'No mood was input during this session.'});
+//   }
+
+//   return res.status(200).json({message: 'Returned current mood.', mood: mood});
+// })
 
 module.exports = router;

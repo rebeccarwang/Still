@@ -16,7 +16,6 @@ export default function Tags({tagsUser, setTagsUser}) {
         if (resTagsPublic.ok) {
           const resTagsPublicJson = await resTagsPublic.json();
           setTagsPublic(resTagsPublicJson);
-          console.log(resTagsPublicJson);
         } else {
           setTagsPublic(null);
         }

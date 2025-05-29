@@ -17,17 +17,17 @@ export default function MoodCheckInPage() {
 
 
   // direct user to different page based on user's selected mood
-  function getNextRoute(score) {
+  function getNextRoute(score, moodId) {
     if (score === 1 || score === 2) {
-      return '/options';
+      return `/options?moodId=${moodId}`;
     }
 
     else if (score === 3) {
-      return '/journal?prompt=neutral';
+      return `/journal?prompt=neutral&moodId=${moodId}`;
     }
 
     else {
-      return '/journal?prompt=high';
+      return `/journal?prompt=high&moodId=${moodId}`;
     }
   }
 
@@ -46,14 +46,15 @@ export default function MoodCheckInPage() {
         credentials: 'include'
       });
 
+      const resJson = await res.json();
+
       if (!res.ok) {
-        const resJson = await res.json();
         setServerError(resJson.error || 'Something went wrong');
         return;
       }
 
       else {
-        const nextRoute = getNextRoute(selectedMood);
+        const nextRoute = getNextRoute(selectedMood, resJson.moodId);
         navigate(nextRoute);
       }
     }
@@ -71,7 +72,7 @@ export default function MoodCheckInPage() {
     {moods.map(mood => (
       <button
       key={mood.score}
-      onClick={() => {setSelectedMood(mood.score); console.log(mood.score)}}
+      onClick={() => {setSelectedMood(mood.score)}}
       >
         {mood.emoji}
       </button>

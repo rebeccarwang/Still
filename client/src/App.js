@@ -6,6 +6,7 @@ import SignupPage from './pages/SignupPage';
 import {AuthProvider} from './hooks/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import JournalEntryPage from './pages/JournalEntryPage';
+import MoodTagsPage from './pages/MoodTagsPage';
 import UserPreferenceViewer from './pages/UserPreferenceViewer';
 import OptionsPage from './pages/OptionsPage';
 
@@ -20,6 +21,7 @@ function App() {
           <Route path='/journal' element={<ProtectedRoute><JournalEntryPage /></ProtectedRoute>} />
           <Route path='/options' element={<ProtectedRoute><OptionsPage /></ProtectedRoute>} />
           <Route path='/options/preference' element={<ProtectedRoute><UserPreferenceViewer /></ProtectedRoute>} />
+          <Route path='/tags' element={<ProtectedRoute><MoodTagsPage /></ProtectedRoute>} />
           <Route path='/signup' element={<SignupPage />} />
         </Routes>
       </BrowserRouter>

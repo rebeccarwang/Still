@@ -71,4 +71,53 @@ router.post('/journal-entry', isAuthenticated, async (req, res) => {
 })
 
 
+// posts new tags
+router.post('/mood', isAuthenticated, async (req, res) => {
+  const {tagsUser, moodId} = req.body;
+  const moodIdInt = parseInt(moodId);
+
+  // checks if there are tags to be added
+  if (tagsUser.length === 0) {
+    return res.status(200).json({message: 'No tags added'});
+  }
+
+  // checks for valid input types
+  if (!Number.isInteger(moodIdInt) || !Array.isArray(tagsUser) || !(tagsUser.every(id => Number.isInteger(id)))) {
+    return res.status(400).json({error: 'Invalid data'});
+  }
+
+  // checks if all tag ids are actual tags in the tags relation table
+  const allTagOverlaps = await prisma.tag.findMany({
+    where: {id: {in: tagsUser}}
+  })
+  if (allTagOverlaps.length !== tagsUser.length) {
+    return res.status(400).json({error: 'Invalid data length'});
+  }
+
+  // checks if mood entry exists and if user has authorization to update mood entry tags
+  const moodEntry = await prisma.moodCheckIn.findUnique({
+    where: {id: moodIdInt}
+  })
+  if (!moodEntry || moodEntry.userId !== req.session.userId) {
+    return res.status(403).json({error: 'User does not have permission to access resource'});
+  }
+
+  try {
+    // create new entries in MoodCheckInTagMap relation
+    const newTagEntries = await prisma.moodCheckInTagMap.createMany({
+      data: [...tagsUser].map(tag => ({
+        tagId: tag,
+        moodCheckInId: moodIdInt
+      }))
+    });
+
+    return res.status(201).json({message: 'Mood tags successfully added.'});
+  }
+  catch (err) {
+    console.log('Error:', err);
+    return res.status(500).json({error: 'Something went wrong. Please try again later.'});
+  }
+})
+
+
 module.exports = router;
