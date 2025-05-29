@@ -1,31 +1,34 @@
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useSearchParams} from 'react-router-dom';
 import {useState} from 'react';
 
 export default function OptionsPage() {
   const navigate = useNavigate();
   const [nextPage, setNextPage] = useState('');
   const [serverError, setServerError] = useState('');
+  const [searchParams] = useSearchParams();
+  const moodId = searchParams.get('moodId');
+
 
   // direct user to different page based on user's selected option
   function getNextRoute(nextPage) {
     if (nextPage === 'journaling') {
-      return '/journal?prompt=low';
+      return `/journal?prompt=low&moodId=${moodId}`;
     }
 
     else if (nextPage === 'affirmations') {
-      return '/options/preference?type=affirmations';
+      return `/options/preference?type=affirmations&moodId=${moodId}`;
     }
 
     else if (nextPage === 'coping-strategies') {
-      return '/options/preference?type=coping-strategies';
+      return `/options/preference?type=coping-strategies&moodId=${moodId}`;
     }
 
     else if (nextPage === 'self-care') {
-      return '/options/preference?type=self-care';
+      return `/options/preference?type=self-care&moodId=${moodId}`;
     }
 
     else {
-      return '/options/preference?type=none';
+      return `/options/preference?type=none&moodId=${moodId}`;
     }
   }
 

@@ -6,6 +6,7 @@ import {useState, useEffect} from 'react';
 export default function UserPreferenceViewer() {
   const [searchParams] = useSearchParams();
   const preferenceType = searchParams.get('type');
+  const moodId = searchParams.get('moodId');
   const [userPreference, setUserPreference] = useState(null);
   const [loading, setLoading] = useState(true);
   const prompts = {'affirmations': 'Reminder List', 'self-care': 'Things that help me recharge', 'coping-strategies': 'Things that help me in difficult moments'};
@@ -49,6 +50,8 @@ export default function UserPreferenceViewer() {
     <>
     <h1>{prompts[preferenceType]}</h1>
     <h2>{userPreference.map((item, idx) => <li key={idx}>{item}</li>)}</h2>
+    <button onClick={() => navigate(-1)}>Back</button>
+    <button onClick={() => navigate('/home')}>Next</button>
     </>
     )
 
@@ -57,13 +60,14 @@ export default function UserPreferenceViewer() {
     (
     <>
     <h2>Sometimes it's just one of those days. Thanks for checking in. Would you like to add any tags before you go?</h2>
-    <button onClick={() => navigate('/check-in')}>No</button>
-    <button onClick={() => navigate('/tags')}>Yes</button>
+    <button onClick={() => navigate('/home')}>No</button>
+    <button onClick={() => navigate(`/tags?moodId=${moodId}`)}>Yes</button>
+    <br></br>
+    <button onClick={() => navigate(-1)}>Back</button>
     </>
     )
     }
     <br></br>
-    <button onClick={() => navigate(-1)}>Back</button>
     </>
   )
 }
