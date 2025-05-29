@@ -43,7 +43,7 @@ export default function MoodTagsPage() {
   async function handleSubmit() {
     let isSuccess = await postMoodTags(tagsUser, moodId);
     if (isSuccess) {
-      console.log('tags added to mood!');
+      navigate('/home');
     }
   }
 

@@ -77,7 +77,6 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted}) {
       return;
     }
     console.log(tagsUser);
-    console.log("just displayed user tags");
     let journalEntryId = await postJournalEntry(journalText);
     let ifTagsPosted = await postTags(tagsUser, journalEntryId);
     if (journalEntryId && ifTagsPosted) {

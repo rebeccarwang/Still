@@ -8,6 +8,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import JournalEntryPage from './pages/JournalEntryPage';
 import MoodTagsPage from './pages/MoodTagsPage';
 import UserPreferenceViewer from './pages/UserPreferenceViewer';
+import HomePage from './pages/HomePage';
 import OptionsPage from './pages/OptionsPage';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path='/options' element={<ProtectedRoute><OptionsPage /></ProtectedRoute>} />
           <Route path='/options/preference' element={<ProtectedRoute><UserPreferenceViewer /></ProtectedRoute>} />
           <Route path='/tags' element={<ProtectedRoute><MoodTagsPage /></ProtectedRoute>} />
+          <Route path='/home' element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
           <Route path='/signup' element={<SignupPage />} />
         </Routes>
       </BrowserRouter>

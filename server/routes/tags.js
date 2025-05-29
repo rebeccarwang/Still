@@ -59,7 +59,8 @@ router.post('/journal-entry', isAuthenticated, async (req, res) => {
       data: [...tagsUser].map(tag => ({
         tagId: tag,
         entryId: journalEntryId
-      }))
+      })),
+      skipDuplicates: true
     });
 
     return res.status(201).json({message: 'Journal tags successfully added.'});
@@ -108,7 +109,8 @@ router.post('/mood', isAuthenticated, async (req, res) => {
       data: [...tagsUser].map(tag => ({
         tagId: tag,
         moodCheckInId: moodIdInt
-      }))
+      })),
+      skipDuplicates: true
     });
 
     return res.status(201).json({message: 'Mood tags successfully added.'});

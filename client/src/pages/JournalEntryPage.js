@@ -1,7 +1,7 @@
 import {useSearchParams} from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
 import JournalEntryForm from '../components/JournalEntryForm';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 
 export default function JournalEntryPage() {
@@ -12,19 +12,26 @@ export default function JournalEntryPage() {
   const prompt = prompts[promptType];
 
   const navigate = useNavigate();
-  const [isTagOnly, setIsTagOnly] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  function handleTagsOnly() {
+    navigate(`/tags?moodId=${moodId}`);
+  }
+
+
+  useEffect(() => {
+    if (isSubmitted) {
+      navigate('/home');
+    }
+  }, [isSubmitted, navigate])
 
 
   return (
     <>
-    {!isTagOnly && (
-      <>
-      <h2>{prompt}</h2>
-    <JournalEntryForm isSubmitted={isTagOnly} setIsSubmitted={setIsTagOnly}/>
-    <button onClick={() => {setIsTagOnly(true); navigate(`/tags?moodId=${moodId}`)}}>Tags only today</button>
-    </>
-    )}
-    {isTagOnly && <h2>Finished journaling- placeholder</h2>}
+    <h2>{prompt}</h2>
+    <JournalEntryForm isSubmitted={isSubmitted} setIsSubmitted={setIsSubmitted}/>
+    <button onClick={handleTagsOnly}>Tags only today</button>
+
     <br />
     <button onClick={() => navigate(-1)}>Back</button>
     </>
