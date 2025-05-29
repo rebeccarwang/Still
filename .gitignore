@@ -11,6 +11,8 @@ client/.env.development.local
 client/.env.test.local
 client/.env.production.local
 server/.env
+.venv/
+__pycache__/
 
 # testing
 client/coverage
