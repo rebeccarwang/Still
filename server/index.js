@@ -15,6 +15,7 @@ const moodCheckInRoutes = require('./routes/moodCheckIn');
 const journalEntryRoutes = require('./routes/journal');
 const tagRoutes = require('./routes/tags');
 const hasCheckedInRoutes = require('./routes/hasCheckedIn');
+const trendRoutes = require('./routes/trends');
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -44,6 +45,7 @@ app.use('/api/mood-checkin', moodCheckInRoutes);
 app.use('/api/journal', journalEntryRoutes);
 app.use('/api/tags', tagRoutes);
 app.use('/api/has-checked-in', hasCheckedInRoutes);
+app.use('/api/trends', trendRoutes);
 
 
 app.get('/', (req, res) => {

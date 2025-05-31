@@ -12,6 +12,7 @@ import HomePage from './pages/HomePage';
 import OptionsPage from './pages/OptionsPage';
 import EntriesPage from './pages/EntriesPage';
 import IndividualEntryPage from './pages/IndividualEntryPage';
+import TrendsPage from './pages/TrendsPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path='/home' element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
           <Route path='/entries' element={<ProtectedRoute><EntriesPage /></ProtectedRoute>} />
           <Route path='/entries/:id' element={<ProtectedRoute><IndividualEntryPage /></ProtectedRoute>} />
+          <Route path='/trends' element={<ProtectedRoute><TrendsPage /></ProtectedRoute>} />
           <Route path='/signup' element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
