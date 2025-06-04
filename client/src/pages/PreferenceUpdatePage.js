@@ -196,14 +196,14 @@ export default function PreferenceUpdatePage() {
       });
 
       if (!prefAdds.ok) {
-        const prefAddsJson = await prefAdds.json();
+        // const prefAddsJson = await prefAdds.json();
         // console.log('the prefAddsJson being logged', prefAddsJson);
         setServerError('Something went wrong- try again later');
         return false;
       }
 
       if (!prefDels.ok) {
-        const prefDelsJson = await prefDels.json();
+        // const prefDelsJson = await prefDels.json();
         // console.log('the prefDelsJson being logged', prefDelsJson);
         setServerError('Something went wrong- try again later');
         return false;
