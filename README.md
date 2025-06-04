@@ -22,16 +22,16 @@ Currently, the project includes:
 - Database schema for users and mood check-ins
 - Early-stage frontend with mood check-in UI
 - **User-defined preferences**: coping strategies, affirmations, and self-care items
-- **Branching prompts** tailored to mood: mostly built
-- **Basic mood-based user flow**: initial flow logic is mostly built
-
-Planned features:
-
+- **Branching prompts** tailored to mood
+- **Basic mood-based user flow**: initial flow logic
 - **Optional journaling** feature
 - **Sentiment analysis** of journal entries
 - **Mismatch detection**: highlight differences between mood and sentiment
 - **Optional tags** for insights and trend tracking
 - **Weekly insights and trends**
+
+Planned features:
+
 - **Full UI polish and responsive design**
 
 ---

@@ -96,7 +96,7 @@ router.post('/user/delete', isAuthenticated, async (req, res) => {
   }
   catch (err) {
     console.log('Error:', err);
-    return res.status(500).json({error: err || 'Something went wrong. Please try again later.'});
+    return res.status(500).json({error: 'Something went wrong. Please try again later.'});
   }
 })
 

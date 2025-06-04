@@ -1,14 +1,13 @@
-import {useAuth} from '../hooks/AuthContext';
-import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {Autocomplete, TextField} from '@mui/material';
 import LogoutButton from '../components/LogoutButton';
 
 
 export default function PreferenceUpdatePage() {
-  const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [serverSuccess, setServerSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [publicAffirmations, setPublicAffirmations] = useState();
   const [userAffirmations, setUserAffirmations] = useState([]);
@@ -25,121 +24,121 @@ export default function PreferenceUpdatePage() {
   const [userSelectedCoping, setUserSelectedCoping] = useState([]);
   const [copingError, setCopingError] = useState(false);
 
-  useEffect(() => {
+  // fetch public preferences from database
+  const fetchPublicPreferences = async () => {
+    try {
+      const resSelfCare = await fetch('http://localhost:8080/api/self-care/public', {
+        credentials: 'include',
+      });
 
-    // fetch public preferences from database
-    const fetchPublicPreferences = async () => {
-      try {
-        const resSelfCare = await fetch('http://localhost:8080/api/self-care/public', {
-          credentials: 'include',
-        });
+      const resAffirmations = await fetch('http://localhost:8080/api/affirmations/public', {
+        credentials: 'include',
+      });
 
-        const resAffirmations = await fetch('http://localhost:8080/api/affirmations/public', {
-          credentials: 'include',
-        });
+      const resCoping = await fetch('http://localhost:8080/api/coping-strategies/public', {
+        credentials: 'include',
+      });
 
-        const resCoping = await fetch('http://localhost:8080/api/coping-strategies/public', {
-          credentials: 'include',
-        });
-
-        // sets list of publicSelfCare options
-        if (resSelfCare.ok) {
-          const resSelfCareJson = await resSelfCare.json();
-          // console.log('public self care', resSelfCareJson);
-          setPublicSelfCare(resSelfCareJson);
-        } else {
-          setPublicSelfCare(null);
-        }
-
-        // sets list of publicAffirmations options
-        if (resAffirmations.ok) {
-          const resAffirmationsJson = await resAffirmations.json();
-          setPublicAffirmations(resAffirmationsJson);
-        } else {
-          setPublicAffirmations(null);
-        }
-
-        // sets lists of publicCoping options
-        if (resCoping.ok) {
-          const resCopingJson = await resCoping.json();
-          setPublicCoping(resCopingJson);
-        } else {
-          setPublicCoping(null);
-        }
-      } catch (err) {
-        console.log('Error:', err);
-        setPublicAffirmations(null);
-        setPublicCoping(null);
+      // sets list of publicSelfCare options
+      if (resSelfCare.ok) {
+        const resSelfCareJson = await resSelfCare.json();
+        // console.log('public self care', resSelfCareJson);
+        setPublicSelfCare(resSelfCareJson);
+      } else {
         setPublicSelfCare(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-
-    // fetch user preferences from database
-    const fetchUserPreferences = async () => {
-      try {
-        const resSelfCareUser = await fetch(`http://localhost:8080/api/self-care/user/id-content`, {
-          credentials: 'include',
-        });
-
-        const resCopingUser = await fetch(`http://localhost:8080/api/coping-strategies/user/id-content`, {
-          credentials: 'include',
-        });
-
-        const resAffirmationsUser = await fetch(`http://localhost:8080/api/affirmations/user/id-content`, {
-          credentials: 'include',
-        });
-
-        // sets list of userSelfCare options and initial userSelectedSelfCare options
-        if (resSelfCareUser.ok) {
-          const resSelfCareUserJson = await resSelfCareUser.json();
-          // console.log("resSelfCareUserJson", resSelfCareUserJson);
-          setUserSelfCare(resSelfCareUserJson);
-          setUserSelectedSelfCare(resSelfCareUserJson);
-          // console.log(resUserPreferenceJson);
-        }
-        else {
-          setUserSelfCare(null);
-        }
-
-        // sets list of userCoping options and initial userSelectedCoping options
-        if (resCopingUser.ok) {
-          const resCopingUserJson = await resCopingUser.json();
-          setUserCoping(resCopingUserJson);
-          setUserSelectedCoping(resCopingUserJson);
-          // console.log(resUserPreferenceJson);
-        }
-        else {
-          setUserCoping(null);
-        }
-
-        // sets list of userAffirmations options and initial userSelectedAffirmations options
-        if (resAffirmationsUser.ok) {
-          const resAffirmationsUserJson = await resAffirmationsUser.json();
-          setUserAffirmations(resAffirmationsUserJson);
-          setUserSelectedAffirmations(resAffirmationsUserJson);
-          // console.log(resUserPreferenceJson);
-        }
-        else {
-          setUserAffirmations(null);
-        }
       }
 
-      catch (err) {
-        console.log('Error:', err);
+      // sets list of publicAffirmations options
+      if (resAffirmations.ok) {
+        const resAffirmationsJson = await resAffirmations.json();
+        setPublicAffirmations(resAffirmationsJson);
+      } else {
+        setPublicAffirmations(null);
+      }
+
+      // sets lists of publicCoping options
+      if (resCoping.ok) {
+        const resCopingJson = await resCoping.json();
+        setPublicCoping(resCopingJson);
+      } else {
+        setPublicCoping(null);
+      }
+    } catch (err) {
+      console.log('Error:', err);
+      setPublicAffirmations(null);
+      setPublicCoping(null);
+      setPublicSelfCare(null);
+    }
+  };
+
+
+  // fetch user preferences from database
+  const fetchUserPreferences = async () => {
+    try {
+      const resSelfCareUser = await fetch(`http://localhost:8080/api/self-care/user/id-content`, {
+        credentials: 'include',
+      });
+
+      const resCopingUser = await fetch(`http://localhost:8080/api/coping-strategies/user/id-content`, {
+        credentials: 'include',
+      });
+
+      const resAffirmationsUser = await fetch(`http://localhost:8080/api/affirmations/user/id-content`, {
+        credentials: 'include',
+      });
+
+      // sets list of userSelfCare options and initial userSelectedSelfCare options
+      if (resSelfCareUser.ok) {
+        const resSelfCareUserJson = await resSelfCareUser.json();
+        // console.log("resSelfCareUserJson", resSelfCareUserJson);
+        setUserSelfCare(resSelfCareUserJson);
+        setUserSelectedSelfCare(resSelfCareUserJson);
+        // console.log(resUserPreferenceJson);
+      }
+      else {
         setUserSelfCare(null);
-        setUserAffirmations(null);
-        setUserCoping(null);
-
-      } finally {
-        setLoading(false);
       }
-    };
 
-    fetchPublicPreferences();
-    fetchUserPreferences();
+      // sets list of userCoping options and initial userSelectedCoping options
+      if (resCopingUser.ok) {
+        const resCopingUserJson = await resCopingUser.json();
+        setUserCoping(resCopingUserJson);
+        setUserSelectedCoping(resCopingUserJson);
+        // console.log(resUserPreferenceJson);
+      }
+      else {
+        setUserCoping(null);
+      }
+
+      // sets list of userAffirmations options and initial userSelectedAffirmations options
+      if (resAffirmationsUser.ok) {
+        const resAffirmationsUserJson = await resAffirmationsUser.json();
+        setUserAffirmations(resAffirmationsUserJson);
+        setUserSelectedAffirmations(resAffirmationsUserJson);
+        // console.log(resUserPreferenceJson);
+      }
+      else {
+        setUserAffirmations(null);
+      }
+    }
+
+    catch (err) {
+      console.log('Error:', err);
+      setUserSelfCare(null);
+      setUserAffirmations(null);
+      setUserCoping(null);
+
+    }
+  };
+
+  // fetches public and user preferences from the database
+  useEffect(() => {
+    const fetchPublicUserData = async () => {
+      await fetchPublicPreferences();
+      await fetchUserPreferences();
+      setLoading(false);
+    }
+    fetchPublicUserData();
   }, []);
 
   // extract objects/strings to be added and objects to be deleted from database
@@ -198,13 +197,15 @@ export default function PreferenceUpdatePage() {
 
       if (!prefAdds.ok) {
         const prefAddsJson = await prefAdds.json();
-        setServerError(prefAddsJson.error || 'Something went wrong- try again later');
+        // console.log('the prefAddsJson being logged', prefAddsJson);
+        setServerError('Something went wrong- try again later');
         return false;
       }
 
       if (!prefDels.ok) {
         const prefDelsJson = await prefDels.json();
-        setServerError(prefDelsJson.error || 'Something went wrong- try again later');
+        // console.log('the prefDelsJson being logged', prefDelsJson);
+        setServerError('Something went wrong- try again later');
         return false;
       }
 
@@ -232,6 +233,7 @@ export default function PreferenceUpdatePage() {
     }
 
     try {
+      setIsSubmitting(true);
       // get items to add to and delete from self-care database
       const [addSelfCare, delSelfCare] = getAdditionsDeletions(userSelfCare, userSelectedSelfCare);
       const [addAff, delAff] = getAdditionsDeletions(userAffirmations, userSelectedAffirmations);
@@ -243,18 +245,26 @@ export default function PreferenceUpdatePage() {
       const addDelCoping = await addDelDb(addCoping, delCoping, 'coping-strategies');
 
       if (addDelSelfCare && addDelAff && addDelCoping) {
-        navigate('/home');
+        setServerSuccess(true);
+        setServerError('');
       }
 
       else {
         setServerError('Something went wrong- try again later');
-        // fetchUserPreferences();
+        setServerSuccess(false);
+        // await fetchUserPreferences();
       }
-
     }
     catch (err) {
       console.log('Error:', err);
       setServerError('Something went wrong- try again later');
+      setServerSuccess(false);
+      // await fetchUserPreferences();
+    }
+
+    finally {
+      await fetchUserPreferences();
+      setIsSubmitting(false);
     }
   }
 
@@ -341,10 +351,11 @@ export default function PreferenceUpdatePage() {
         />
       )
       }
-      <button type='submit'>Submit</button>
+      <button type='submit' disabled={isSubmitting}>Submit</button>
     </form>
     <LogoutButton />
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
+    {serverSuccess && <p style={{color: 'purple'}}>Preferences updated successfully.</p>}
     </>
   );
 }
