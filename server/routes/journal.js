@@ -91,7 +91,7 @@ router.post('/entries', isAuthenticated, async (req, res) => {
   try {
 
     // get sentiment score for journalEntry text
-    const sentimentRes = await fetch('http://localhost:8000/api/sentiment', {
+    const sentimentRes = await fetch(`${process.env.SENTIMENT_SERVICE_URL}/api/sentiment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
