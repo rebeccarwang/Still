@@ -22,13 +22,11 @@ app.set('trust proxy', 1);
 
 app.use(cors({
   origin: ['http://localhost:3000', 'https://still-ruddy.vercel.app'],
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
 }));
 
-app.options('*', cors({
-  origin: ['http://localhost:3000', 'https://still-ruddy.vercel.app'],
-  credentials: true
-}));
 
 app.use(express.json());
 
