@@ -29,7 +29,7 @@ client/build
 .pnp.js
 
 # prisma
-generated/prisma/
+server/generated/prisma/
 
 # troubleshooting
 npm-debug.log*
