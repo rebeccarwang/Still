@@ -4,7 +4,7 @@ from transformers import pipeline
 
 app = FastAPI()
 
-classifier = pipeline('sentiment-analysis', model='distilbert-base-uncased-finetuned-sst-2-english')
+# classifier = pipeline('sentiment-analysis', model='distilbert-base-uncased-finetuned-sst-2-english')
 
 # checks field of journalText has a string input when SentimentAnalysis is passed in as parameter
 class SentimentAnalysis(BaseModel):
@@ -15,6 +15,7 @@ class SentimentAnalysis(BaseModel):
 def analyze_sentiment(journal_entry: SentimentAnalysis):
   user_text = journal_entry.journalText
   try:
+    classifier = pipeline('sentiment-analysis', model='distilbert-base-uncased-finetuned-sst-2-english')
     res = classifier(user_text)[0]
     label = res['label']
 
