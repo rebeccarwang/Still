@@ -30,7 +30,9 @@ app.use(session({
   resave: false,
   cookie: {
     maxAge: 1000*60*60*3,
-    httpOnly: true
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none': 'lax'
   }
 }))
 
