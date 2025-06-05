@@ -18,13 +18,20 @@ const tagRoutes = require('./routes/tags');
 const hasCheckedInRoutes = require('./routes/hasCheckedIn');
 const trendRoutes = require('./routes/trends');
 
+app.set('trust proxy', 1);
+
 app.use(cors({
   origin: ['http://localhost:3000', 'https://still-ruddy.vercel.app'],
   credentials: true
 }));
+
+app.options('*', cors({
+  origin: ['http://localhost:3000', 'https://still-ruddy.vercel.app'],
+  credentials: true
+}));
+
 app.use(express.json());
 
-app.set('trust proxy', 1);
 // use session middleware
 app.use(session({
   secret: process.env.SESSION_SECRET,
