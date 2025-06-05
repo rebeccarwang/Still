@@ -18,7 +18,7 @@ const hasCheckedInRoutes = require('./routes/hasCheckedIn');
 const trendRoutes = require('./routes/trends');
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'https://still-ruddy.vercel.app'],
   credentials: true
 }));
 app.use(express.json());
@@ -52,6 +52,6 @@ app.get('/', (req, res) => {
   res.send('Testing')
 })
 
-app.listen(8080, () => {
-  console.log('server listening on port 8080');
+app.listen(process.env.PORT, () => {
+  console.log(`server listening on port ${process.env.PORT}`);
 })
