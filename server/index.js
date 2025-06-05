@@ -24,6 +24,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
+app.set('trust proxy', 1);
 // use session middleware
 app.use(session({
   secret: process.env.SESSION_SECRET,
