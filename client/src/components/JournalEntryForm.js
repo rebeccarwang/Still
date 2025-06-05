@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import Tags from './Tags';
+import BASE_URL from '../config';
 
 export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatch, setIsMismatch}) {
   const [serverError, setServerError] = useState('');
@@ -11,7 +12,7 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
   // create new journal entry, returns journal entry id
   async function postJournalEntry(journalText) {
     try {
-      const res = await fetch('http://localhost:8080/api/journal/entries', {
+      const res = await fetch(`${BASE_URL}/api/journal/entries`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -41,7 +42,7 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
   // create new tags for journal entries
   async function postTags(tagsUser, journalEntryId) {
     try {
-      const res = await fetch('http://localhost:8080/api/tags/journal-entry', {
+      const res = await fetch(`${BASE_URL}/api/tags/journal-entry`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

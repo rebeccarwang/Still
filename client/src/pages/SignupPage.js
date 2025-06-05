@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import {useNavigate, Link} from 'react-router-dom';
 import {useState} from 'react';
+import BASE_URL from '../config';
 
 
 export default function SignupPage() {
@@ -12,7 +13,7 @@ export default function SignupPage() {
   const onSubmit = async (data) => {
     // console.log(data);
     try {
-      const res = await fetch('http://localhost:8080/api/users', {
+      const res = await fetch(`${BASE_URL}/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

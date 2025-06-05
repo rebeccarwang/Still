@@ -1,6 +1,7 @@
 import JournalEntryCard from '../components/JournalEntryCard';
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
+import BASE_URL from '../config';
 
 export default function EntriesPage() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function EntriesPage() {
   useEffect(() => {
     const fetchAllEntries = async () => {
       try {
-        const resEntries = await fetch('http://localhost:8080/api/journal/entries', {
+        const resEntries = await fetch(`${BASE_URL}/api/journal/entries`, {
           credentials: 'include',
         });
 

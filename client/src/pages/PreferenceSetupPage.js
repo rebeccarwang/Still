@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {Autocomplete, TextField} from '@mui/material';
 import LogoutButton from '../components/LogoutButton';
+import BASE_URL from '../config';
 
 export default function PreferenceSetupPage() {
   const {user} = useAuth();
@@ -25,15 +26,15 @@ export default function PreferenceSetupPage() {
   useEffect(() => {
     const fetchPublicSelfCareStrategies = async () => {
       try {
-        const resSelfCare = await fetch('http://localhost:8080/api/self-care/public', {
+        const resSelfCare = await fetch(`${BASE_URL}/api/self-care/public`, {
           credentials: 'include',
         });
 
-        const resAffirmations = await fetch('http://localhost:8080/api/affirmations/public', {
+        const resAffirmations = await fetch(`${BASE_URL}/api/affirmations/public`, {
           credentials: 'include',
         });
 
-        const resCoping = await fetch('http://localhost:8080/api/coping-strategies/public', {
+        const resCoping = await fetch(`${BASE_URL}/api/coping-strategies/public`, {
           credentials: 'include',
         });
 
@@ -87,7 +88,7 @@ export default function PreferenceSetupPage() {
 
     try {
       // add self-care items to tables in databases
-      const selfCareAdditions = await fetch('http://localhost:8080/api/self-care/user', {
+      const selfCareAdditions = await fetch(`${BASE_URL}/api/self-care/user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -97,7 +98,7 @@ export default function PreferenceSetupPage() {
       });
 
       // add coping items to tables in databases
-      const copingAdditions = await fetch('http://localhost:8080/api/coping-strategies/user', {
+      const copingAdditions = await fetch(`${BASE_URL}/api/coping-strategies/user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -107,7 +108,7 @@ export default function PreferenceSetupPage() {
       });
 
       // add affirmations to tables in databases
-      const affirmationAdditions = await fetch('http://localhost:8080/api/affirmations/user', {
+      const affirmationAdditions = await fetch(`${BASE_URL}/api/affirmations/user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -117,7 +118,7 @@ export default function PreferenceSetupPage() {
       });
       console.log('messages', selfCareAdditions.status, copingAdditions.status, affirmationAdditions.status);
       if (selfCareAdditions.ok && copingAdditions.ok && affirmationAdditions.ok) {
-        await fetch('http://localhost:8080/api/users/onboarding-complete', {
+        await fetch(`${BASE_URL}/api/users/onboarding-complete`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import {Chip} from '@mui/material';
+import BASE_URL from '../config';
 
 export default function Tags({tagsUser, setTagsUser}) {
   const [loading, setLoading] = useState(true);
@@ -8,7 +9,7 @@ export default function Tags({tagsUser, setTagsUser}) {
   useEffect(() => {
     const fetchPublicTagOptions = async () => {
       try {
-        const resTagsPublic = await fetch('http://localhost:8080/api/tags/public', {
+        const resTagsPublic = await fetch(`${BASE_URL}/api/tags/public`, {
           credentials: 'include',
         });
 

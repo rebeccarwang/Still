@@ -2,6 +2,7 @@ import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import {useSearchParams} from 'react-router-dom';
 import Tags from '../components/Tags';
+import BASE_URL from '../config';
 
 export default function MoodTagsPage() {
   const [tagsUser, setTagsUser] = useState(new Set());
@@ -13,7 +14,7 @@ export default function MoodTagsPage() {
   // create new tags for journal entries
   async function postMoodTags(tagsUser, moodId) {
     try {
-      const res = await fetch('http://localhost:8080/api/tags/mood', {
+      const res = await fetch(`${BASE_URL}/api/tags/mood`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

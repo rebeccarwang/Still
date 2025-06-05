@@ -1,6 +1,7 @@
 import {useParams, useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {Card, CardContent, Typography} from '@mui/material';
+import BASE_URL from '../config';
 
 
 export default function IndividualEntryPage() {
@@ -14,7 +15,7 @@ export default function IndividualEntryPage() {
   useEffect(() => {
     const fetchAllEntries = async () => {
       try {
-        const resEntry = await fetch(`http://localhost:8080/api/journal/entries/${id}`, {
+        const resEntry = await fetch(`${BASE_URL}/api/journal/entries/${id}`, {
           credentials: 'include',
         });
 

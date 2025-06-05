@@ -1,6 +1,7 @@
 import LogoutButton from '../components/LogoutButton';
 import {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
+import BASE_URL from '../config';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchHome = async() => {
       try {
-        const res = await fetch('http://localhost:8080/api/has-checked-in/home', {
+        const res = await fetch(`${BASE_URL}/api/has-checked-in/home`, {
           credentials: 'include'
         });
 

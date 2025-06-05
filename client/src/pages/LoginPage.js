@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import {useNavigate, Link} from 'react-router-dom';
 import {useState} from 'react';
 import {useAuth} from '../hooks/AuthContext.js';
+import BASE_URL from '../config';
 
 export default function LoginPage () {
   const {register, handleSubmit, formState: { errors }} = useForm();
@@ -13,7 +14,7 @@ export default function LoginPage () {
   const onSubmit = async (data) => {
     // console.log(data);
     try {
-      const res = await fetch('http://localhost:8080/api/auth/login', {
+      const res = await fetch(`${BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -1,6 +1,7 @@
 import {useSearchParams} from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
+import BASE_URL from '../config';
 
 
 export default function UserPreferenceViewer() {
@@ -19,7 +20,7 @@ export default function UserPreferenceViewer() {
         if (preferenceType === 'none') {
           return;
         }
-        const resUserPreference = await fetch(`http://localhost:8080/api/${preferenceType}/user`, {
+        const resUserPreference = await fetch(`${BASE_URL}/api/${preferenceType}/user`, {
           credentials: 'include',
         });
 

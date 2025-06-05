@@ -1,6 +1,7 @@
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {LineChart, XAxis, YAxis, Line, Tooltip} from 'recharts';
+import BASE_URL from '../config';
 
 
 export default function TrendsPage() {
@@ -13,7 +14,7 @@ export default function TrendsPage() {
   useEffect(() => {
     const fetchTrends = async () => {
       try {
-        const resTrends = await fetch(`http://localhost:8080/api/trends/mood/weekly`, {
+        const resTrends = await fetch(`${BASE_URL}/api/trends/mood/weekly`, {
           credentials: 'include',
         });
 

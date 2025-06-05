@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import {Autocomplete, TextField} from '@mui/material';
 import LogoutButton from '../components/LogoutButton';
+import BASE_URL from '../config';
 
 
 export default function PreferenceUpdatePage() {
@@ -27,15 +28,15 @@ export default function PreferenceUpdatePage() {
   // fetch public preferences from database
   const fetchPublicPreferences = async () => {
     try {
-      const resSelfCare = await fetch('http://localhost:8080/api/self-care/public', {
+      const resSelfCare = await fetch(`${BASE_URL}/api/self-care/public`, {
         credentials: 'include',
       });
 
-      const resAffirmations = await fetch('http://localhost:8080/api/affirmations/public', {
+      const resAffirmations = await fetch(`${BASE_URL}/api/affirmations/public`, {
         credentials: 'include',
       });
 
-      const resCoping = await fetch('http://localhost:8080/api/coping-strategies/public', {
+      const resCoping = await fetch(`${BASE_URL}/api/coping-strategies/public`, {
         credentials: 'include',
       });
 
@@ -75,15 +76,15 @@ export default function PreferenceUpdatePage() {
   // fetch user preferences from database
   const fetchUserPreferences = async () => {
     try {
-      const resSelfCareUser = await fetch(`http://localhost:8080/api/self-care/user/id-content`, {
+      const resSelfCareUser = await fetch(`${BASE_URL}/api/self-care/user/id-content`, {
         credentials: 'include',
       });
 
-      const resCopingUser = await fetch(`http://localhost:8080/api/coping-strategies/user/id-content`, {
+      const resCopingUser = await fetch(`${BASE_URL}/api/coping-strategies/user/id-content`, {
         credentials: 'include',
       });
 
-      const resAffirmationsUser = await fetch(`http://localhost:8080/api/affirmations/user/id-content`, {
+      const resAffirmationsUser = await fetch(`${BASE_URL}/api/affirmations/user/id-content`, {
         credentials: 'include',
       });
 
@@ -172,7 +173,7 @@ export default function PreferenceUpdatePage() {
   async function addDelDb(arrAdd, arrDel, preference) {
     try {
       // add self-care items to tables in databases
-      const prefAdds = await fetch(`http://localhost:8080/api/${preference}/user`, {
+      const prefAdds = await fetch(`${BASE_URL}/api/${preference}/user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -184,7 +185,7 @@ export default function PreferenceUpdatePage() {
       });
 
       // delete self-care items from tables in databases
-      const prefDels = await fetch(`http://localhost:8080/api/${preference}/user/delete`, {
+      const prefDels = await fetch(`${BASE_URL}/api/${preference}/user/delete`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

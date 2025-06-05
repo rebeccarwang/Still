@@ -2,6 +2,7 @@ import {useAuth} from '../hooks/AuthContext';
 import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import LogoutButton from '../components/LogoutButton';
+import BASE_URL from '../config';
 
 export default function MoodCheckInPage() {
   const {user} = useAuth();
@@ -37,7 +38,7 @@ export default function MoodCheckInPage() {
       return;
     }
     try {
-      const res = await fetch('http://localhost:8080/api/mood-checkin', {
+      const res = await fetch(`${BASE_URL}/api/mood-checkin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
