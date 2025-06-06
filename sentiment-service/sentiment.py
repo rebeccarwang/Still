@@ -10,6 +10,10 @@ app = FastAPI()
 class SentimentAnalysis(BaseModel):
   journalText: str
 
+@app.get('/')
+def root():
+  return {'status': 'ok'}
+
 # analyzes sentiment of journal entry text
 @app.post('/api/sentiment')
 def analyze_sentiment(journal_entry: SentimentAnalysis):
