@@ -83,6 +83,7 @@ router.get('/entries/:id', isAuthenticated, async (req, res) => {
 // create new journal entry
 router.post('/entries', isAuthenticated, async (req, res) => {
   const {journalText} = req.body;
+  let sentimentScore = null;
 
   if (typeof journalText !== 'string') {
     return res.status(400).json({error: 'Invalid journal entry -strings only.'});
@@ -99,9 +100,16 @@ router.post('/entries', isAuthenticated, async (req, res) => {
       body: JSON.stringify({journalText})
     });
     const sentimentResJson = await sentimentRes.json();
-    const sentimentScore = sentimentResJson.score;
-    // console.log('sentiment score:', sentimentScore);
+    sentimentScore = sentimentResJson.score;
+    console.log('sentiment score:', sentimentScore);
+  }
 
+  catch (err) {
+    console.log('Error', err);
+    sentimentScore = null;
+  }
+
+  try {
     // create new entry in journalEntry table
     const newJournalEntry = await prisma.journalEntry.create({
       data: {
@@ -114,12 +122,14 @@ router.post('/entries', isAuthenticated, async (req, res) => {
 
     let mismatch = false;
 
-    // check if there's a mismatch between moodAtTimeOfEntry and sentimentScore
-    if ((req.session.mood === 4 || req.session.mood === 5) && sentimentScore < 0.4) {
-      mismatch = true
-    }
-    else if ((req.session.mood === 1 || req.session.mood === 2) && sentimentScore > 0.6) {
-      mismatch = true
+    // check if there's a mismatch between moodAtTimeOfEntry and sentimentScore if sentimentScore exists
+    if (sentimentScore) {
+      if ((req.session.mood === 4 || req.session.mood === 5) && sentimentScore < 0.4) {
+        mismatch = true
+      }
+      else if ((req.session.mood === 1 || req.session.mood === 2) && sentimentScore > 0.6) {
+        mismatch = true
+      }
     }
 
     return res.status(201).json({message: 'Journal entry successfully added.', journalEntryId: newJournalEntry.id, mismatch: mismatch});
@@ -128,7 +138,6 @@ router.post('/entries', isAuthenticated, async (req, res) => {
     console.log('Error:', err);
     return res.status(500).json({error: 'Something went wrong. Please try again later.'});
   }
-
 })
 
 module.exports = router;
