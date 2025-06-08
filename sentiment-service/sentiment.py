@@ -5,10 +5,27 @@ from transformers import pipeline
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 limiter = Limiter(key_func=get_remote_address)
 app = FastAPI()
 app.state.limiter = limiter
+
+# loads API_KEY for accessing sentiment-service from .env file
+API_KEY = os.getenv('SENTIMENT_SERVICE_API_KEY')
+
+# checks API key matches that expected from the backend before allowing any calls to functions
+@app.middleware('http')
+async def check_api_key(request: Request, call_next):
+  if request.headers.get('x-api-key') != API_KEY:
+    return JSONResponse(
+      status_code=401,
+      content={'error': 'You are not authorized to use this resource'}
+      )
+  return await call_next(request)
 
 # error message if user exceeds limit
 @app.exception_handler(RateLimitExceeded)

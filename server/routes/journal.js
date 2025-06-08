@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const prisma = require('../utils/db');
+require('dotenv').config();
 
 const {isAuthenticated} = require('../middleware/auth');
 
@@ -95,6 +96,7 @@ router.post('/entries', isAuthenticated, async (req, res) => {
     const sentimentRes = await fetch(`${process.env.SENTIMENT_SERVICE_URL}/api/sentiment`, {
       method: 'POST',
       headers: {
+        'x-api-key': process.env.SENTIMENT_SERVICE_API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({journalText})
