@@ -53,54 +53,58 @@ export default function LoginPage () {
 
   return (
     <>
-      <form className='login-form' onSubmit={handleSubmit(onSubmit)}>
+    <div className='min-h-screen flex items-center justify-center md:items-start md:pt-40'>
+      <div className='space-y-4 border border-gray-200 p-4 rounded w-96'>
+        <h1 className='text-4xl font-semibold text-center mb-12'>Login</h1>
+        <form className='login-form' onSubmit={handleSubmit(onSubmit)}>
+          <div className='login-email mb-4'>
+            <input
+              type='text'
+              placeholder='Email'
+              autoComplete='username'
+              {...register('email', {
+                required: 'email is required',
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: 'email format does not match expected',
+                },
+              })}
+              className='w-full px-4 py-2 border border-med-blue rounded'
+            />
+            {errors.email && <p>{errors.email.message}</p>}
+          </div>
 
-        <h1 className='login-title'>Login</h1>
+          <div className='mb-4'>
+            <input
+              type='password'
+              placeholder='Password'
+              autoComplete='current-password'
+              className='w-full px-4 py-2 border border-med-blue rounded'
+              {...register('password', {
+                required: 'password is required',
+                minLength: {
+                  value: 8,
+                  message: 'must be at least 8 characters',
+                },
+                maxLength: {
+                  value: 30,
+                  message: 'character limit exceeded',
+                },
+              })}
+            />
+            {errors.password && <p>{errors.password.message}</p>}
+          </div>
 
-        <div className='login-email'>
-          <input
-            type='text'
-            placeholder='Email'
-            autoComplete='username'
-            {...register('email', {
-              required: 'email is required',
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: 'email format does not match expected',
-              },
-            })}
-          />
-          {errors.email && <p style={{color: 'red'}}>{errors.email.message}</p>}
+          <div>
+            <input type='submit' value='Login' className='w-full h-12 bg-med-blue hover:opacity-85 text-white font-medium font-semibold py-2 px-4 rounded-xl'/>
+          </div>
+          {serverError && <p>{serverError}</p>}
+        </form>
+        <div className='text-center text-sm'>
+          First time here? Create an account <Link className='font-bold' to='/signup'>here</Link>
         </div>
-
-        <div className='login-password'>
-          <input
-            type='password'
-            placeholder='Password'
-            autoComplete='current-password'
-            {...register('password', {
-              required: 'password is required',
-              minLength: {
-                value: 8,
-                message: 'must be at least 8 characters',
-              },
-              maxLength: {
-                value: 30,
-                message: 'character limit exceeded',
-              },
-            })}
-          />
-          {errors.password && <p style={{color: 'red'}}>{errors.password.message}</p>}
-        </div>
-
-        <div>
-          <input type='submit' value='LOGIN' style={{ backgroundColor: '#33c7ff' }} />
-        </div>
-        {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
-      </form>
-      <div>
-        First time here? Create an account <Link to='/signup'>here</Link>
       </div>
+    </div>
     </>
   );
 }
