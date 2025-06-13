@@ -1,8 +1,8 @@
 import {useAuth} from '../hooks/AuthContext';
 import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
-import LogoutButton from '../components/LogoutButton';
 import BASE_URL from '../config';
+import Layout from '../components/Layout'
 
 export default function MoodCheckInPage() {
   const {user} = useAuth();
@@ -68,21 +68,22 @@ export default function MoodCheckInPage() {
 
   return (
     <>
-    <h1>Welcome, {user.firstName}!</h1>
-    <h2>How are you feeling today?</h2>
-    {moods.map(mood => (
-      <button
-      key={mood.score}
-      onClick={() => {setSelectedMood(mood.score)}}
-      >
-        {mood.emoji}
-      </button>
-    ))}
-    <br/><br/>
-    <button>Back</button> <button onClick={handleSubmitMood}>Next</button>
-    {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
-    <br/><br/>
-    <LogoutButton />
+    <Layout>
+      <h1>Welcome, {user.firstName}!</h1>
+      <h2>How are you feeling today?</h2>
+      {moods.map(mood => (
+        <button
+        key={mood.score}
+        onClick={() => {setSelectedMood(mood.score)}}
+        >
+          {mood.emoji}
+        </button>
+      ))}
+      <br/><br/>
+      <button>Back</button> <button onClick={handleSubmitMood}>Next</button>
+      {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
+      <br/><br/>
+    </Layout>
     </>
   );
 }

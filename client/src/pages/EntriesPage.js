@@ -2,6 +2,7 @@ import JournalEntryCard from '../components/JournalEntryCard';
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import BASE_URL from '../config';
+import Layout from '../components/Layout';
 
 export default function EntriesPage() {
   const navigate = useNavigate();
@@ -39,15 +40,17 @@ export default function EntriesPage() {
 
   return (
     <>
-    Journal Entries
-    {!loading && entries &&
-    (<>
-    {entries.map(entry => (<JournalEntryCard key={entry.id} id={entry.id} date={entry.date} mood={moods[entry.mood]} content={entry.content} tags={entry.tags} />))}
-    </>
-    )}
-    {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
-    <br />
-    <button onClick={() => navigate(-1)}>Back</button>
+    <Layout>
+      Journal Entries
+      {!loading && entries &&
+      (<>
+      {entries.map(entry => (<JournalEntryCard key={entry.id} id={entry.id} date={entry.date} mood={moods[entry.mood]} content={entry.content} tags={entry.tags} />))}
+      </>
+      )}
+      {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
+      <br />
+      <button onClick={() => navigate(-1)}>Back</button>
+    </Layout>
     </>
   )
 }

@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {useSearchParams} from 'react-router-dom';
 import Tags from '../components/Tags';
 import BASE_URL from '../config';
+import Layout from '../components/Layout'
 
 export default function MoodTagsPage() {
   const [tagsUser, setTagsUser] = useState(new Set());
@@ -51,10 +52,12 @@ export default function MoodTagsPage() {
 
   return (
     <>
+    <Layout>
     <h2>What's on your mind today in general?</h2>
     <Tags tagsUser={tagsUser} setTagsUser={setTagsUser} />
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
     <button onClick={handleSubmit}>Submit</button>
+    </Layout>
     </>
   )
 }

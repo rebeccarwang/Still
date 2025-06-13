@@ -1,22 +1,18 @@
 import LogoutButton from './LogoutButton';
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 function NavBar() {
   return (
     <>
-    <nav className='navbar' style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <div className='navbar-left'>
-        <a href='/home' className='home'>Home</a>
+    <nav className='bg-dark-blue text-white flex justify-between whitespace-nowrap'>
+      <div className='flex items-center space-x-4 h-full'>
+        <NavLink to='/home' className={({isActive}) => `rounded-md hover:bg-navy px-2 lg:px-8 py-2 lg:py-4 ${isActive ? 'font-semibold' : 'font-normal'}`}>Home</NavLink>
+        <NavLink to='/check-in' className={({isActive}) => `rounded-md hover:bg-navy px-2 lg:px-8 py-2 lg:py-4 ${isActive ? 'font-semibold' : 'font-normal'}`}>Check In</NavLink>
+        <NavLink to='/entries' className={({isActive}) => `rounded-md hover:bg-navy px-2 lg:px-8 py-2 lg:py-4 ${isActive ? 'font-semibold' : 'font-normal'}`}>Journal Entries</NavLink>
+        <NavLink to='/trends' className={({isActive}) => `rounded-md hover:bg-navy px-2 lg:px-8 py-2 lg:py-4 ${isActive ? 'font-semibold' : 'font-normal'}`}>Trends</NavLink>
+        <NavLink to='/preferences' className={({isActive}) => `rounded-md hover:bg-navy px-2 lg:px-8 py-2 lg:py-4 ${isActive ? 'font-semibold' : 'font-normal'}`}>Preferences</NavLink>
       </div>
-      <div className='navbar-centre' style={{display: 'flex', flex: 0.5, justifyContent: 'space-between', alignItems: 'center'}}>
-        <Link to='/check-in'>Check In</Link>
-        <Link to='/entries'>Journal Entries</Link>
-        <Link to='/trends'>Trends</Link>
-        <Link to='/preferences'>Preferences</Link>
-      </div>
-      <div className='navbar-right'>
-        <LogoutButton />
-      </div>
+      <div className='rounded-md bg-dark-blue hover:bg-navy px-2 lg:px-8 py-2 lg:py-4'><LogoutButton /></div>
     </nav>
     </>
   )

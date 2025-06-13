@@ -2,6 +2,7 @@ import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {LineChart, XAxis, YAxis, Line, Tooltip} from 'recharts';
 import BASE_URL from '../config';
+import Layout from '../components/Layout'
 
 
 export default function TrendsPage() {
@@ -62,6 +63,7 @@ export default function TrendsPage() {
 
   return (
     <>
+    <Layout>
     <h1>Trends</h1>
     {!loading && trends.moodData.length === 0 && (
       <h3>No moods were input in the past week.</h3>
@@ -105,6 +107,7 @@ export default function TrendsPage() {
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
     <br />
     <button onClick={() => navigate(-1)}>Back</button>
+    </Layout>
     </>
   )
 }

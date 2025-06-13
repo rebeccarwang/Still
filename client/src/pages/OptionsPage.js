@@ -1,5 +1,6 @@
 import {useNavigate, useSearchParams} from 'react-router-dom';
 import {useState} from 'react';
+import Layout from '../components/Layout'
 
 export default function OptionsPage() {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ export default function OptionsPage() {
 
   return (
     <>
+    <Layout>
     <h2>Sounds like it was a hard day. What would make you feel best supported right now?</h2>
     <button onClick={() => setNextPage('journaling')}>Reflecting</button>
     <button onClick={() => setNextPage('affirmations')}>Seeing my reminders list</button>
@@ -54,6 +56,7 @@ export default function OptionsPage() {
     <button onClick={() => navigate(-1)}>Back</button>
     <button onClick={handleSubmitOption}>Next</button>
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
+    </Layout>
     </>
   );
 }

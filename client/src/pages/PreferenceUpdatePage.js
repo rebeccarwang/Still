@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {Autocomplete, TextField} from '@mui/material';
-import LogoutButton from '../components/LogoutButton';
 import BASE_URL from '../config';
+import Layout from '../components/Layout'
 
 
 export default function PreferenceUpdatePage() {
@@ -271,6 +271,7 @@ export default function PreferenceUpdatePage() {
 
   return (
     <>
+    <Layout>
     <h1>Preference Update</h1>
     <form onSubmit={handleSubmit}>
       {/* user selects and/or writes self-care options */}
@@ -354,9 +355,9 @@ export default function PreferenceUpdatePage() {
       }
       <button type='submit' disabled={isSubmitting}>Submit</button>
     </form>
-    <LogoutButton />
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
     {serverSuccess && <p style={{color: 'purple'}}>Preferences updated successfully.</p>}
+    </Layout>
     </>
   );
 }

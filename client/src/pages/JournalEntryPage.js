@@ -2,6 +2,7 @@ import {useSearchParams} from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
 import JournalEntryForm from '../components/JournalEntryForm';
 import {useState, useEffect} from 'react';
+import Layout from '../components/Layout'
 
 
 export default function JournalEntryPage() {
@@ -32,6 +33,7 @@ export default function JournalEntryPage() {
 
   return (
     <>
+    <Layout>
     {/* if user has not yet journalled or if user's mood score is similar to journal entry's sentiment score */}
     {!isMismatch &&
     (<>
@@ -54,6 +56,7 @@ export default function JournalEntryPage() {
     </>)}
     <br />
     <button onClick={() => navigate(-1)}>Back</button>
+    </Layout>
     </>
   );
 }

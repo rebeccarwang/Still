@@ -2,6 +2,7 @@ import {useSearchParams} from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import BASE_URL from '../config';
+import Layout from '../components/Layout'
 
 
 export default function UserPreferenceViewer() {
@@ -46,6 +47,7 @@ export default function UserPreferenceViewer() {
 
   return (
     <>
+    <Layout>
     {!loading && userPreference &&
     (
     <>
@@ -69,6 +71,7 @@ export default function UserPreferenceViewer() {
     )
     }
     <br></br>
+    </Layout>
     </>
   )
 }

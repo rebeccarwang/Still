@@ -2,6 +2,7 @@ import {useParams, useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {Card, CardContent, Typography} from '@mui/material';
 import BASE_URL from '../config';
+import Layout from '../components/Layout'
 
 
 export default function IndividualEntryPage() {
@@ -40,6 +41,7 @@ export default function IndividualEntryPage() {
 
   return (
     <>
+    <Layout>
     {!loading && entry &&
     (<>
     <Card>
@@ -59,6 +61,7 @@ export default function IndividualEntryPage() {
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
     <br />
     <button onClick={() => navigate(-1)}>Back</button>
+    </Layout>
     </>
   )
 }
