@@ -54,8 +54,8 @@ export default function LoginPage () {
   return (
     <>
     <div className='min-h-screen flex items-center justify-center md:items-start md:pt-40'>
-      <div className='space-y-4 border border-gray-200 p-4 rounded w-96'>
-        <h1 className='text-4xl font-semibold text-center mb-12'>Login</h1>
+      <div className='space-y-4 border border-med-orange-200 border-opacity-25 p-4 rounded-xl w-96'>
+        <h1 className='text-4xl font-semibold text-center text-med-orange mb-12'>Login</h1>
         <form className='login-form' onSubmit={handleSubmit(onSubmit)}>
           <div className='login-email mb-4'>
             <input
@@ -69,9 +69,9 @@ export default function LoginPage () {
                   message: 'email format does not match expected',
                 },
               })}
-              className='w-full px-4 py-2 border border-med-blue rounded'
+              className='w-full px-4 py-2 border border-med-orange border-opacity-25 rounded focus:outline-[#ebb49e] placeholder-italic'
             />
-            {errors.email && <p>{errors.email.message}</p>}
+            {errors.email && <p className='text-sm text-[#FF3131]'>{errors.email.message}</p>}
           </div>
 
           <div className='mb-4'>
@@ -79,7 +79,7 @@ export default function LoginPage () {
               type='password'
               placeholder='Password'
               autoComplete='current-password'
-              className='w-full px-4 py-2 border border-med-blue rounded'
+              className='w-full px-4 py-2 border border-med-orange border-opacity-25 rounded focus:outline-[#ebb49e] placeholder-italic'
               {...register('password', {
                 required: 'password is required',
                 minLength: {
@@ -92,15 +92,15 @@ export default function LoginPage () {
                 },
               })}
             />
-            {errors.password && <p>{errors.password.message}</p>}
+            {errors.password && <p className='text-sm text-[#FF3131]'>{errors.password.message}</p>}
           </div>
 
           <div>
-            <input type='submit' value='Login' className='w-full h-12 bg-med-blue hover:opacity-85 text-white font-medium font-semibold py-2 px-4 rounded-xl'/>
+            <input type='submit' value='Login' className='w-full h-12 bg-med-orange hover:opacity-85 text-white font-medium font-semibold py-2 px-4 rounded-xl'/>
           </div>
-          {serverError && <p>{serverError}</p>}
+          {serverError && <p className='text-sm text-[#FF3131]'>{serverError}</p>}
         </form>
-        <div className='text-center text-sm'>
+        <div className='text-center text-sm text-med-orange'>
           First time here? Create an account <Link className='font-bold' to='/signup'>here</Link>
         </div>
       </div>

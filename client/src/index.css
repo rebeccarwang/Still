@@ -3,5 +3,38 @@
 @tailwind utilities;
 
 body {
-  @apply bg-near-white font-sans text-navy;
+  @apply bg-near-white font-sans text-med-grey;
+}
+
+@layer utilities {
+  .placeholder-italic::placeholder{
+    font-style: italic;
+  }
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 40px;
+  background: white;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 38px;
+  height: 38px;
+  background: #D8693D;
+  border-radius: 50%;
+}
+
+
+@media(max-width: 640px) {
+  .slider {
+    height: 25px;
+  }
 }

@@ -6,11 +6,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'near-white': '#eef3f9',
-        'light-blue': '#d3e0e4',
-        'med-blue': '#7c95af',
-        'dark-blue': '#525f6b',
-        'navy': 	'#14232d'
+        'near-white': '#FFF6EB',
+        'med-orange': {
+          'DEFAULT': '#D8693D',
+          200: '#D8693D'
+        },
+        'med-grey': '#595959'
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif']

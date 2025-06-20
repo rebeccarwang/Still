@@ -39,8 +39,8 @@ export default function SignupPage() {
   return (
     <>
     <div className='min-h-screen flex items-center justify-center md:items-start md:pt-40'>
-      <div className='space-y-4 border border-gray-200 p-4 rounded w-96'>
-        <h1 className='text-4xl font-semibold text-center mb-12'>Create an account</h1>
+      <div className='space-y-4 border border-med-orange-200 border-opacity-25 p-4 rounded-xl w-96'>
+        <h1 className='text-4xl font-semibold text-center text-med-orange mb-12'>Create an account</h1>
         <form className='signup-form' onSubmit={handleSubmit(onSubmit)}>
 
           <div className='mb-4'>
@@ -58,9 +58,9 @@ export default function SignupPage() {
                   message: 'character limit exceeded',
                 },
               })}
-              className='w-full px-4 py-2 border border-med-blue rounded'
+              className='w-full px-4 py-2 border border-med-orange border-opacity-25 rounded focus:outline-[#ebb49e] placeholder-italic'
             />
-            {errors.firstName && <p>{errors.firstName.message}</p>}
+            {errors.firstName && <p className='text-sm text-[#FF3131]'>{errors.firstName.message}</p>}
           </div>
 
           <div className='register-last-name mb-4'>
@@ -78,9 +78,9 @@ export default function SignupPage() {
                   message: 'character limit exceeded',
                 },
               })}
-              className='w-full px-4 py-2 border border-med-blue rounded'
+              className='w-full px-4 py-2 border border-med-orange border-opacity-25 rounded focus:outline-[#ebb49e] placeholder-italic'
             />
-            {errors.lastName && <p>{errors.lastName.message}</p>}
+            {errors.lastName && <p className='text-sm text-[#FF3131]'>{errors.lastName.message}</p>}
           </div>
 
           <div className='register-email mb-4'>
@@ -94,9 +94,9 @@ export default function SignupPage() {
                   message: 'email format does not match expected',
                 },
               })}
-              className='w-full px-4 py-2 border border-med-blue rounded'
+              className='w-full px-4 py-2 border border-med-orange border-opacity-25 rounded focus:outline-[#ebb49e] placeholder-italic'
             />
-            {errors.email && <p>{errors.email.message}</p>}
+            {errors.email && <p className='text-sm text-[#FF3131]'>{errors.email.message}</p>}
           </div>
 
           <div className='register-password mb-4'>
@@ -114,17 +114,17 @@ export default function SignupPage() {
                   message: 'character limit exceeded',
                 },
               })}
-              className='w-full px-4 py-2 border border-med-blue rounded'
+              className='w-full px-4 py-2 border border-med-orange border-opacity-25 rounded focus:outline-[#ebb49e] placeholder-italic'
             />
-            {errors.password && <p>{errors.password.message}</p>}
+            {errors.password && <p className='text-sm text-[#FF3131]'>{errors.password.message}</p>}
           </div>
 
           <div>
-            <input type='submit' value='Sign Up' className='w-full h-12 bg-med-blue hover:opacity-85 text-white font-medium font-semibold py-2 px-4 rounded-xl' />
+            <input type='submit' value='Sign Up' className='w-full h-12 bg-med-orange hover:opacity-85 text-white font-medium font-semibold py-2 px-4 rounded-xl' />
           </div>
-          {serverError && <p>{serverError}</p>}
+          {serverError && <p className='text-sm text-[#FF3131]'>{serverError}</p>}
         </form>
-        <div className='text-center text-sm'>
+        <div className='text-center text-sm text-med-orange'>
         Already have an account? Login <Link className='font-bold' to='/'>here</Link>
         </div>
       </div>
