@@ -33,7 +33,7 @@ import BASE_URL from '../config';
     }
     return (
       <>
-      <button onClick={logoutUser}>Logout</button>
+      <button onClick={logoutUser} className='absolute p-8 lg:p-12 text-med-orange text-lg lg:text-2xl italic whitespace-nowrap right-0'>Logout</button>
       {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
       </>
     )
