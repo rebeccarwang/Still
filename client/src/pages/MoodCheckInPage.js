@@ -1,21 +1,58 @@
 import {useAuth} from '../hooks/AuthContext';
 import {useNavigate} from 'react-router-dom';
+import {Slider} from '@mui/material';
+import {styled} from '@mui/material/styles';
 import {useState} from 'react';
 import BASE_URL from '../config';
 import Layout from '../components/Layout'
-import '../index.css';
+
+
+  // styled slider
+  const StyledSlider = styled(Slider) ({
+    color: 'white',
+    height: '40px',
+    '& .MuiSlider-rail': {
+      backgroundColor: 'white',
+      opacity: 1
+    },
+    '& .MuiSlider-thumb': {
+      color: '#D8693D',
+      width: '38px',
+      height: '38px',
+      borderRadius: '50%',
+      boxShadow: 'none',
+      '&:hover, &.Mui-focusVisible': {
+        boxShadow: 'none',
+        color: '#C25E36'
+      }
+    },
+    '& .MuiSlider-thumb::before': {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: 5.5,
+      height: 5.5,
+      borderRadius: '50%',
+      boxShadow: `
+        -5.5px -8px white,
+        5.5px -8px white,
+        -5.5px 0 white,
+        5.5px 0 white,
+        -5.5px 8px white,
+        5.5px 8px white
+      `
+    },
+  })
+
 
 export default function MoodCheckInPage() {
   const {user} = useAuth();
   const navigate = useNavigate();
   const [selectedMood, setSelectedMood] = useState(2.5);
   const [serverError, setServerError] = useState('');
+  const [isDefault, setIsDefault] = useState(true);
 
-  // const moods = [{emoji: "😄", score: 5},
-  //   {emoji: "🙂", score: 4},
-  //   {emoji: "😐", score: 3},
-  //   {emoji: "😕", score: 2},
-  //   {emoji: "😔", score: 1}]
 
   const moods = {5: "😄", 4: "🙂", 3: "😐", 2: "😕", 1: "😔"};
 
@@ -73,33 +110,23 @@ export default function MoodCheckInPage() {
     <>
     <Layout>
       <div className='flex flex-col items-center'>
-        <h1 className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-8'>Welcome {user.firstName[0].toUpperCase() + user.firstName.substring(1)}, how are you feeling today?</h1>
-        <div className='w-3/4'>
-          <div className='slidecontainer'>
-          <input
-            type='range'
-            min='0.01'
-            max='5'
-            step='0.01'
-            className='w-full slider'
-            onChange={(e) => {setSelectedMood(Number(e.target.value)); console.log(selectedMood)}}
-          />
-          </div>
-        <div className="text-4xl relative w-full" style={{left: `${(selectedMood/5 * 100) - 3}%`}}>{moods[Math.ceil(selectedMood)]}</div>
-        {/* {moods.map(mood => (
-          <button
-          key={mood.score}
-          onClick={() => {setSelectedMood(mood.score)}}
-          >
-            {mood.emoji}
-          </button>
-        ))} */}
-        </div>
-        <br/><br/>
-        <button>Back</button> <button onClick={handleSubmitMood}>Next</button>
-        {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
-        <br/><br/>
+      <h1 className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-8'>Welcome {user.firstName[0].toUpperCase() + user.firstName.substring(1)}, how are you feeling today?</h1>
+      <div className='w-3/5 relative flex-col'>
+        <StyledSlider
+          defaultValue={2.5}
+          step={0.01}
+          min={0.01}
+          max={5}
+          onChange={e => {setSelectedMood(e.target.value); setIsDefault(false)}}
+        />
+        <button className='absolute pl-4 sm:pl-7 pt-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' onClick={handleSubmitMood}>Next →</button>
+      {!isDefault && <div className="text-4xl absolute w-full pt-2" style={{left: `calc(${(selectedMood/5 * 100)}% - 19px)`}}>{moods[Math.ceil(selectedMood)]}</div>}
+      {isDefault && <div className='italic sm:text-lg text-center'>Slide the bar to select your mood</div>}
       </div>
+      </div>
+      <br/><br/>
+      {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
+      <br/><br/>
     </Layout>
     </>
   );
