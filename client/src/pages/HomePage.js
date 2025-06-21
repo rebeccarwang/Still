@@ -1,7 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useNavigate, NavLink} from 'react-router-dom';
 import BASE_URL from '../config';
-import Layout from '../components/Layout'
+import Layout from '../components/Layout';
+import {Chip} from '@mui/material';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -34,12 +35,61 @@ export default function HomePage() {
     <Layout>
     {!isLoading &&
       (<>
-        <h1>User check-in flow completed</h1>
-        <NavLink to='/home' className={({isActive}) => `rounded-md hover:bg-navy px-2 lg:px-8 py-2 lg:py-4 ${isActive ? 'font-semibold' : 'font-normal'}`}>Home</NavLink>
-        <NavLink to='/check-in' className={({isActive}) => `rounded-md hover:bg-navy px-2 lg:px-8 py-2 lg:py-4 ${isActive ? 'font-semibold' : 'font-normal'}`}>Check In</NavLink>
-        <NavLink to='/entries' className={({isActive}) => `rounded-md hover:bg-navy px-2 lg:px-8 py-2 lg:py-4 ${isActive ? 'font-semibold' : 'font-normal'}`}>Journal Entries</NavLink>
-        <NavLink to='/trends' className={({isActive}) => `rounded-md hover:bg-navy px-2 lg:px-8 py-2 lg:py-4 ${isActive ? 'font-semibold' : 'font-normal'}`}>Trends</NavLink>
-        <NavLink to='/preferences' className={({isActive}) => `rounded-md hover:bg-navy px-2 lg:px-8 py-2 lg:py-4 ${isActive ? 'font-semibold' : 'font-normal'}`}>Preferences</NavLink>
+        <h1 className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-8'>What would you like to do today?</h1>
+        <div className='grid grid-cols-4 gap-x-2 gap-y-3 pt-2'>
+        <Chip
+          sx={{
+            backgroundColor: '#c9c9c9',
+            color: 'white',
+            fontSize: '1rem',
+            '&:hover': {
+              backgroundColor: '#D8693D'
+            }
+          }}
+          label='Check In'
+          onClick={() => navigate('/check-in')}
+          className='col-start-1'
+        />
+        <Chip
+          sx={{
+            backgroundColor: '#c9c9c9',
+            color: 'white',
+            fontSize: '1rem',
+            '&:hover': {
+              backgroundColor: '#D8693D'
+            }
+          }}
+          label='View Entries'
+          onClick={() => navigate('/entries')}
+          className='col-start-2'
+        />
+        <Chip
+          sx={{
+            backgroundColor: '#c9c9c9',
+            color: 'white',
+            fontSize: '1rem',
+            '&:hover': {
+              backgroundColor: '#D8693D'
+            }
+          }}
+          label='View Trends'
+          onClick={() => navigate('/trends')}
+          className='col-start-3'
+        />
+        <Chip
+          sx={{
+            backgroundColor: '#c9c9c9',
+            color: 'white',
+            fontSize: '1rem',
+            '&:hover': {
+              backgroundColor: '#D8693D'
+            }
+          }}
+          label='Update Preferences'
+          onClick={() => navigate('/preferences')}
+          className='col-start-4'
+        />
+        </div>
       </>
       )}
     </Layout>

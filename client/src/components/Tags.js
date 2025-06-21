@@ -54,6 +54,7 @@ export default function Tags({tagsUser, setTagsUser}) {
         sx={{
           backgroundColor: tagsUser.has(item.id) ? '#D8693D': '#c9c9c9',
           color: 'white',
+          fontSize: '1rem',
           '&:hover': {
             backgroundColor: tagsUser.has(item.id) ? '#D8693D': '#b3b3b3'
           }
