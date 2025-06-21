@@ -2,7 +2,7 @@ import {useState} from 'react';
 import Tags from './Tags';
 import BASE_URL from '../config';
 
-export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatch, setIsMismatch}) {
+export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatch, setIsMismatch, moodId}) {
   const [serverError, setServerError] = useState('');
   const [journalText, setJournalText] = useState('');
   const [isText, setIsText] = useState(false);
@@ -68,18 +68,64 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
     }
   }
 
+    // create new tags not associated with a journal entry
+  async function postMoodTags(tagsUser, moodId) {
+    try {
+      const res = await fetch(`${BASE_URL}/api/tags/mood`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({tagsUser: Array.from(tagsUser), moodId}),
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        return true;
+        // navigate(`/tags?journalEntryId=${resJson.journalEntryId}`);
+      }
+      else {
+        const resJson = await res.json();
+        setServerError(resJson.error || 'Something went wrong');
+        return false;
+      }
+    }
+    catch (err) {
+      console.log('Error:', err);
+      setServerError('Something went wrong- try again later');
+      return false;
+    }
+  }
+
+
   async function handleSubmit(event) {
     event.preventDefault();
+
+    // if no journal entry
     if (!isText) {
-      setServerError('Please submit a journal entry with some text if desired. Otherwise, feel free to choose another option.');
-      return;
+      // if there are tags, tries to write tags to database
+      if (tagsUser) {
+        let isSuccess = await postMoodTags(tagsUser, moodId);
+        if (isSuccess) {
+          setIsMismatch(false);
+          setIsSubmitted(true);
+        }
+      }
+      else {
+        setIsMismatch(false);
+        setIsSubmitted(true);
+      }
     }
-    // console.log(tagsUser);
-    let journalEntry = await postJournalEntry(journalText);
-    let ifTagsPosted = await postTags(tagsUser, journalEntry.journalEntryId);
-    if (journalEntry && ifTagsPosted) {
-      setIsMismatch(journalEntry.mismatch);
-      setIsSubmitted(true);
+
+    // if journal entry, tries to write journal entry and tag(s) to database
+    else {
+      // console.log(tagsUser);
+      let journalEntry = await postJournalEntry(journalText);
+      let ifTagsPosted = await postTags(tagsUser, journalEntry.journalEntryId);
+      if (journalEntry && ifTagsPosted) {
+        setIsMismatch(journalEntry.mismatch);
+        setIsSubmitted(true);
+      }
     }
   }
   return (
@@ -87,14 +133,15 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
     <div>
       <form onSubmit={handleSubmit}>
         <textarea rows={10}
-          placeholder="Today's thoughts"
+          placeholder="My day was..."
           onChange={(e) => {setJournalText(e.target.value); setIsText(e.target.value.trim().length > 0)}}
+          className='w-full px-4 py-2 border border-med-orange border-opacity-25 rounded-xl focus:outline-[#ebb49e] placeholder-italic'
         ></textarea>
         <br></br>
-        {isText && <Tags tagsUser={tagsUser} setTagsUser={setTagsUser}/>}
+        <Tags tagsUser={tagsUser} setTagsUser={setTagsUser}/>
         <button type='submit'>Submit</button>
       </form>
-      {serverError && <p style={{ color: 'purple' }}>{serverError}</p>}
+      {serverError && <p className='text-sm text-[#FF3131]'>{serverError}</p>}
     </div>
     </>
   )

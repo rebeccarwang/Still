@@ -49,14 +49,20 @@ export default function Tags({tagsUser, setTagsUser}) {
     <>
     {!loading && (
       <>
-      <h2>{tagsPublic.map(item =>
+      <div className='grid grid-cols-6 gap-x-2 gap-y-3 pt-4'>{tagsPublic.map(item =>
         <Chip
+        sx={{
+          backgroundColor: tagsUser.has(item.id) ? '#D8693D': '#c9c9c9',
+          color: 'white',
+          '&:hover': {
+            backgroundColor: tagsUser.has(item.id) ? '#D8693D': '#b3b3b3'
+          }
+        }}
         key={item.id}
         label={item.name}
-        clickable color={tagsUser.has(item.id) ? 'primary': 'default'}
         onClick={() => clickTag(item.id)}
         />
-        )}</h2>
+        )}</div>
       </>
     )}
     <br></br>
