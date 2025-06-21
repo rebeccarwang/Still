@@ -31,6 +31,7 @@ export default function JournalEntryPage() {
     <>
     <Layout>
     {/* if user has not yet journalled or if user's mood score is similar to journal entry's sentiment score */}
+    <div>
     {!isMismatch &&
     (<>
     <h2 className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-8'>{prompt}</h2>
@@ -48,8 +49,7 @@ export default function JournalEntryPage() {
     (<>
     <JournalEntryForm isSubmitted={isSubmitted} setIsSubmitted={setIsSubmitted} isMismatch={isMismatch} setIsMismatch={setIsMismatch} moodId={moodId}/>
     </>)}
-    <br />
-    <button onClick={() => navigate(-1)}>Back</button>
+    </div>
     </Layout>
     </>
   );

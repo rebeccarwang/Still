@@ -1,12 +1,14 @@
 import {useState} from 'react';
 import Tags from './Tags';
 import BASE_URL from '../config';
+import {useNavigate} from 'react-router-dom';
 
 export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatch, setIsMismatch, moodId}) {
   const [serverError, setServerError] = useState('');
   const [journalText, setJournalText] = useState('');
   const [isText, setIsText] = useState(false);
   const [tagsUser, setTagsUser] = useState(new Set());
+  const navigate = useNavigate();
 
 
   // create new journal entry, returns journal entry id
@@ -131,7 +133,7 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
   return (
     <>
     <div>
-      <form onSubmit={handleSubmit}>
+      <form className='relative' onSubmit={handleSubmit}>
         <textarea rows={10}
           placeholder="My day was..."
           onChange={(e) => {setJournalText(e.target.value); setIsText(e.target.value.trim().length > 0)}}
@@ -139,7 +141,8 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
         ></textarea>
         <br></br>
         <Tags tagsUser={tagsUser} setTagsUser={setTagsUser}/>
-        <button type='submit'>Submit</button>
+        <button className='absolute right-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='submit'>Next →</button>
+        <button className='absolute left-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' onClick={() => navigate(-1)}>← Back</button>
       </form>
       {serverError && <p className='text-sm text-[#FF3131]'>{serverError}</p>}
     </div>
