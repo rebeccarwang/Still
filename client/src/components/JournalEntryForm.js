@@ -142,7 +142,7 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
         <br></br>
         <Tags tagsUser={tagsUser} setTagsUser={setTagsUser}/>
         <button className='absolute right-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='submit'>Next →</button>
-        <button className='absolute left-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' onClick={() => navigate(-1)}>← Back</button>
+        <button className='absolute left-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='button' onClick={() => navigate(-1)}>← Back</button>
       </form>
       {serverError && <p className='text-sm text-[#FF3131]'>{serverError}</p>}
     </div>
