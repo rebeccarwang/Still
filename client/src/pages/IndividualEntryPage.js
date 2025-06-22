@@ -42,9 +42,10 @@ export default function IndividualEntryPage() {
   return (
     <>
     <Layout>
+    <div className='relative w-3/4 flex justify-center'>
     {!loading && entry &&
     (<>
-    <Card>
+    <Card className='w-3/4'>
       <CardContent>
         <Typography>
           {entry.date}
@@ -60,7 +61,10 @@ export default function IndividualEntryPage() {
     </>)}
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
     <br />
-    <button onClick={() => navigate(-1)}>Back</button>
+    </div>
+    <div className='relative w-3/4'>
+      <button className='absolute left-4 text-med-orange text-lg pt-12 md:pt-28 sm:text-2xl italic whitespace-nowrap' type='button' onClick={() => navigate(-1)}>← Back</button>
+    </div>
     </Layout>
     </>
   )

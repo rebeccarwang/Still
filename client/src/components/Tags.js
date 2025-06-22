@@ -49,8 +49,8 @@ export default function Tags({tagsUser, setTagsUser}) {
     <>
     {!loading && (
       <>
-      <div className='grid grid-cols-6 gap-x-2 gap-y-3 pt-4'>{tagsPublic.map(item =>
-        <Chip
+      <div className='grid [grid-template-columns:repeat(auto-fit,125px)] justify-center gap-x-2 gap-y-3 pt-4'>{tagsPublic.map(item =>
+      <Chip
         sx={{
           backgroundColor: tagsUser.has(item.id) ? '#D8693D': '#c9c9c9',
           color: 'white',
@@ -62,7 +62,7 @@ export default function Tags({tagsUser, setTagsUser}) {
         key={item.id}
         label={item.name}
         onClick={() => clickTag(item.id)}
-        />
+      />
         )}</div>
       </>
     )}

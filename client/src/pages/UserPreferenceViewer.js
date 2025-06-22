@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import BASE_URL from '../config';
 import Layout from '../components/Layout'
+import StyledChip from '../components/StyledChip';
 
 
 export default function UserPreferenceViewer() {
@@ -48,13 +49,16 @@ export default function UserPreferenceViewer() {
   return (
     <>
     <Layout>
+    <div className='w-3/4 relative'>
     {!loading && userPreference &&
     (
     <>
-    <h1>{prompts[preferenceType]}</h1>
-    <h2>{userPreference.map((item, idx) => <li key={idx}>{item}</li>)}</h2>
-    <button onClick={() => navigate(-1)}>Back</button>
-    <button onClick={() => navigate('/home')}>Next</button>
+    <h1 className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-8'>{prompts[preferenceType]}</h1>
+    <div className='flex justify-center'>
+    <h2 className='text-med-orange sm:text-2xl'>{userPreference.map((item, idx) => <li key={idx}>{item}</li>)}</h2>
+    </div>
+    <button className='absolute left-4 text-med-orange text-lg pt-12 md:pt-28 sm:text-2xl italic whitespace-nowrap' type='button' onClick={() => navigate(-1)}>← Back</button>
+    <button className='absolute right-4 text-med-orange text-lg pt-12 md:pt-28 sm:text-2xl italic whitespace-nowrap' onClick={() => navigate('/home')}>Next →</button>
     </>
     )
 
@@ -62,15 +66,27 @@ export default function UserPreferenceViewer() {
     {!loading && (preferenceType === 'none') &&
     (
     <>
-    <h2>Sometimes it's just one of those days. Thanks for checking in. Would you like to add any tags before you go?</h2>
-    <button onClick={() => navigate('/home')}>No</button>
-    <button onClick={() => navigate(`/tags?moodId=${moodId}`)}>Yes</button>
+    <div className='relative flex flex-col items-center'>
+    <h2 className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-8'>Sometimes it's just one of those days. Thanks for checking in.</h2>
+    <h3 className='text-lg italic text-center'>Would you like to add any tags before you go?</h3>
+    <div className='grid grid-cols-2 w-[300px] gap-x-2 gap-y-3 pt-4 sm:pt-8'>
+    <StyledChip
+      label='No'
+      link='/home'
+    />
+    <StyledChip
+      label='Yes'
+      link={`/tags?moodId=${moodId}`}
+    />
+    </div>
     <br></br>
-    <button onClick={() => navigate(-1)}>Back</button>
+    </div>
+    <button className='absolute left-4 text-med-orange text-lg pt-4 md:pt-12 sm:text-2xl italic whitespace-nowrap' type='button' onClick={() => navigate(-1)}>← Back</button>
     </>
     )
     }
     <br></br>
+    </div>
     </Layout>
     </>
   )

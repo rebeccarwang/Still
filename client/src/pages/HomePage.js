@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useNavigate, NavLink} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import BASE_URL from '../config';
 import Layout from '../components/Layout';
 import {Chip} from '@mui/material';

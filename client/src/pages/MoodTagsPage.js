@@ -9,6 +9,8 @@ export default function MoodTagsPage() {
   const [tagsUser, setTagsUser] = useState(new Set());
   const [serverError, setServerError] = useState('');
   const [searchParams] = useSearchParams();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const moodId = searchParams.get('moodId');
   const navigate = useNavigate();
 
@@ -43,20 +45,37 @@ export default function MoodTagsPage() {
 
 
   async function handleSubmit() {
+    setIsSubmitting(true);
     let isSuccess = await postMoodTags(tagsUser, moodId);
     if (isSuccess) {
-      navigate('/home');
+      setShowConfirmation(true);
+      setTimeout(() => {
+        navigate('/home');
+      }, 750);
     }
+    setIsSubmitting(false);
   }
 
 
   return (
     <>
     <Layout>
-    <h2>What's on your mind today in general?</h2>
+    {!showConfirmation &&
+    (<div className='relative w-3/4'>
+    <h2 className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-8'>What's on your mind today in general?</h2>
     <Tags tagsUser={tagsUser} setTagsUser={setTagsUser} />
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
-    <button onClick={handleSubmit}>Submit</button>
+    <button className='absolute right-4 text-med-orange text-lg pt-12 md:pt-28 sm:text-2xl italic whitespace-nowrap' onClick={handleSubmit}>Submit →</button>
+    {isSubmitting && !showConfirmation &&
+    (<>
+      <div className='fixed inset-0 bg-white bg-opacity-30 z-40'></div>
+      <div className='absolute right-4 text-sm sm:text-md italic whitespace-nowrap pb-4 pt-20 md:pt-40 z-50'>Submitting...</div>
+    </>)}
+    </div>)}
+    {showConfirmation &&
+    (<>
+    <h2 className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-8'>Entry recorded!</h2>
+    </>)}
     </Layout>
     </>
   )
