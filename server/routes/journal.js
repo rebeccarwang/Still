@@ -91,7 +91,6 @@ router.post('/entries', isAuthenticated, async (req, res) => {
   }
 
   try {
-
     // get sentiment score for journalEntry text
     const sentimentRes = await fetch(`${process.env.SENTIMENT_SERVICE_URL}/api/sentiment`, {
       method: 'POST',
@@ -99,7 +98,9 @@ router.post('/entries', isAuthenticated, async (req, res) => {
         'x-api-key': process.env.SENTIMENT_SERVICE_API_KEY,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({journalText})
+      body: JSON.stringify({journalText}),
+      // times out if the fetch call takes more than 1 second (e.g., if microservice undergoing cold start)
+      signal: AbortSignal.timeout(1000)
     });
     const sentimentResJson = await sentimentRes.json();
     sentimentScore = sentimentResJson.score;

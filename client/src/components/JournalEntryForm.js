@@ -8,6 +8,7 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
   const [journalText, setJournalText] = useState('');
   const [isText, setIsText] = useState(false);
   const [tagsUser, setTagsUser] = useState(new Set());
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
 
@@ -102,6 +103,7 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setIsSubmitting(true);
 
     // if no journal entry
     if (!isText) {
@@ -129,6 +131,8 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
         setIsSubmitted(true);
       }
     }
+
+    setIsSubmitting(false);
   }
   return (
     <>
@@ -140,8 +144,12 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
           className='w-full px-4 py-2 border border-med-orange border-opacity-25 rounded-xl focus:outline-[#ebb49e] placeholder-italic'
         ></textarea>
         <br></br>
-        <Tags tagsUser={tagsUser} setTagsUser={setTagsUser}/>
+        <Tags tagsUser={tagsUser} setTagsUser={setTagsUser} />
         <button className='absolute right-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='submit'>Next →</button>
+        {isSubmitting && (<>
+        <div className='fixed inset-0 bg-white bg-opacity-30 z-40'></div>
+        <div className='absolute right-4 text-sm sm:text-md italic whitespace-nowrap pt-10 z-50'>Submitting...</div>
+        </>)}
         <button className='absolute left-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='button' onClick={() => navigate(-1)}>← Back</button>
       </form>
       {serverError && <p className='text-sm text-[#FF3131]'>{serverError}</p>}
