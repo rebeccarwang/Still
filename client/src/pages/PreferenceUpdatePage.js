@@ -2,6 +2,9 @@ import {useState, useEffect} from 'react';
 import {Autocomplete, TextField} from '@mui/material';
 import BASE_URL from '../config';
 import Layout from '../components/Layout'
+import { ThemeProvider } from '@mui/material/styles';
+import {useNavigate} from 'react-router-dom';
+import theme from '../theme';
 
 
 export default function PreferenceUpdatePage() {
@@ -24,6 +27,8 @@ export default function PreferenceUpdatePage() {
   const [userCoping, setUserCoping] = useState([]);
   const [userSelectedCoping, setUserSelectedCoping] = useState([]);
   const [copingError, setCopingError] = useState(false);
+
+  const navigate = useNavigate();
 
   // fetch public preferences from database
   const fetchPublicPreferences = async () => {
@@ -247,6 +252,9 @@ export default function PreferenceUpdatePage() {
 
       if (addDelSelfCare && addDelAff && addDelCoping) {
         setServerSuccess(true);
+        setTimeout(() => {
+          setServerSuccess(false);
+        }, 750);
         setServerError('');
       }
 
@@ -272,10 +280,13 @@ export default function PreferenceUpdatePage() {
   return (
     <>
     <Layout>
-    <h1>Preference Update</h1>
+    <div className='w-3/4 relative'>
+    <h1 className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-8'>Preference Update</h1>
     <form onSubmit={handleSubmit}>
       {/* user selects and/or writes self-care options */}
-      <h2>What helps you recharge?</h2>
+      <div>
+      <ThemeProvider theme={theme}>
+      <h2 className='text-med-orange sm:text-xl md:pb-3'>What helps you recharge?</h2>
       {!loading && (
         <Autocomplete
         multiple
@@ -296,12 +307,17 @@ export default function PreferenceUpdatePage() {
             variant="standard"
             label="Select or type as many options as you would like"
             helperText={selfCareError ? 'Please enter at least 1 item': ''}
+            sx={{
+              '& .MuiInput-underline:hover:before': {
+              borderBottomColor: '#737373'
+            }}}
           />
         )}
+        className='pb-6 md:pb-8'
         />)}
 
       {/* user selects and/or writes coping strategies */}
-      <h2>What helps you get through difficult or overwhelming moments?</h2>
+      <h2 className='text-med-orange sm:text-xl md:pb-3'>What helps you get through difficult or overwhelming moments?</h2>
       {!loading && (
         <Autocomplete
         multiple
@@ -322,12 +338,17 @@ export default function PreferenceUpdatePage() {
             variant="standard"
             label="Select or type as many options as you would like"
             helperText={copingError ? 'Please enter at least 1 item': ''}
+            sx={{
+              '& .MuiInput-underline:hover:before': {
+              borderBottomColor: '#737373'
+            }}}
           />
         )}
+        className='pb-6 md:pb-8'
         />)}
 
       {/* user selects and/or writes affirmations */}
-      <h2>Are there any words, reminders, or beliefs that help you when you're struggling or feeling unsure?</h2>
+      <h2 className='text-med-orange sm:text-xl md:pb-3'>Are there any words, reminders, or beliefs that help you when you're struggling or feeling unsure?</h2>
       {!loading && (
         <Autocomplete
         multiple
@@ -348,15 +369,35 @@ export default function PreferenceUpdatePage() {
             variant="standard"
             label="Select or type as many options as you would like"
             helperText={affirmationError ? 'Please enter at least 1 item': ''}
+            sx={{
+              '& .MuiInput-underline:hover:before': {
+              borderBottomColor: '#737373'
+            }}}
           />
         )}
+        className='pb-6 md:pb-8'
         />
       )
       }
-      <button type='submit' disabled={isSubmitting}>Submit</button>
+      </ThemeProvider>
+      </div>
+      <button className='absolute left-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='button' onClick={() => navigate(-1)}>← Back</button>
+      <button className='absolute right-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='submit' disabled={isSubmitting}>Submit →</button>
     </form>
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
-    {serverSuccess && <p style={{color: 'purple'}}>Preferences updated successfully.</p>}
+    {isSubmitting && !serverSuccess && (
+      <>
+      <div className='fixed inset-0 bg-white bg-opacity-30 z-40'></div>
+      <div className='absolute right-4 text-sm sm:text-md italic whitespace-nowrap pt-10 z-50'>Submitting...</div>
+      </>
+    )}
+    {serverSuccess && (
+      <>
+      <div className='fixed inset-0 bg-white bg-opacity-30 z-45'></div>
+      <div className='absolute right-4 text-sm sm:text-md italic whitespace-nowrap pt-10 z-50'>Preferences saved!</div>
+      </>
+    )}
+    </div>
     </Layout>
     </>
   );

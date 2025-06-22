@@ -2,8 +2,11 @@ import {useAuth} from '../hooks/AuthContext';
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {Autocomplete, TextField} from '@mui/material';
-import LogoutButton from '../components/LogoutButton';
 import BASE_URL from '../config';
+import Layout from '../components/Layout'
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../theme';
+
 
 export default function PreferenceSetupPage() {
   const {user} = useAuth();
@@ -22,6 +25,8 @@ export default function PreferenceSetupPage() {
   const [publicCoping, setPublicCoping] = useState();
   const [userCoping, setUserCoping] = useState([]);
   const [copingError, setCopingError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
     const fetchPublicSelfCareStrategies = async () => {
@@ -87,6 +92,7 @@ export default function PreferenceSetupPage() {
     }
 
     try {
+      setIsSubmitting(true);
       // add self-care items to tables in databases
       const selfCareAdditions = await fetch(`${BASE_URL}/api/self-care/user`, {
         method: 'POST',
@@ -125,7 +131,10 @@ export default function PreferenceSetupPage() {
           },
           credentials: 'include'
         });
-        navigate('/check-in');
+        setShowConfirmation(true);
+        setTimeout(() => {
+          navigate('/check-in');
+        }, 750);
       }
       else {
         setServerError('Something went wrong');
@@ -135,14 +144,21 @@ export default function PreferenceSetupPage() {
       console.log('Error:', err);
       setServerError('Something went wrong- try again later');
     }
+    finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
     <>
-    <h1>Welcome, {user.firstName}! Let's get you set up.</h1>
+    <Layout>
+    <div className='w-3/4 relative'>
+    <h1 className='text-med-orange text-xl sm:text-4xl text-center'>Welcome, {user.firstName}!</h1>
+    <h2 className='sm:text-lg italic text-center p-4 sm:p-8'>Let's get you set up.</h2>
     <form onSubmit={handleSubmit}>
       {/* user selects and/or writes self-care options */}
-      <h2>What helps you recharge?</h2>
+      <ThemeProvider theme={theme}>
+      <h2 className='text-med-orange sm:text-xl md:pb-3'>What helps you recharge?</h2>
       {!loading && (
         <Autocomplete
         multiple
@@ -160,12 +176,13 @@ export default function PreferenceSetupPage() {
             helperText={selfCareError ? 'Please enter at least 1 item': ''}
           />
         )}
+        className='pb-6 md:pb-8'
         />
       )
       }
 
       {/* user selects and/or writes coping strategies */}
-      <h2>What helps you get through difficult or overwhelming moments?</h2>
+      <h2 className='text-med-orange sm:text-xl md:pb-3'>What helps you get through difficult or overwhelming moments?</h2>
       {!loading && (
         <Autocomplete
         multiple
@@ -183,12 +200,13 @@ export default function PreferenceSetupPage() {
             helperText={copingError ? 'Please enter at least 1 item': ''}
           />
         )}
+        className='pb-6 md:pb-8'
         />
       )
       }
 
       {/* user selects and/or writes affirmations */}
-      <h2>Are there any words, reminders, or beliefs that help you when you're struggling or feeling unsure?</h2>
+      <h2 className='text-med-orange sm:text-xl md:pb-3'>Are there any words, reminders, or beliefs that help you when you're struggling or feeling unsure?</h2>
       {!loading && (
         <Autocomplete
         multiple
@@ -206,13 +224,28 @@ export default function PreferenceSetupPage() {
             helperText={affirmationError ? 'Please enter at least 1 item': ''}
           />
         )}
+        className='pb-6 md:pb-8'
         />
       )
       }
-      <button type='submit'>Submit</button>
+      </ThemeProvider>
+      <button className='absolute right-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='submit'>Submit →</button>
     </form>
-    <LogoutButton />
+    {isSubmitting && !showConfirmation && (
+      <>
+      <div className='fixed inset-0 bg-white bg-opacity-30 z-40'></div>
+      <div className='absolute right-4 text-sm sm:text-md italic whitespace-nowrap pt-10 z-45'>Submitting...</div>
+      </>
+    )}
+    {showConfirmation &&
+    (<>
+    <div className='fixed inset-0 bg-near-white z-46 flex items-center justify-center'>
+      <h2 className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-8 z-50'>Preferences saved!</h2>
+    </div>
+    </>)}
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
+    </div>
+    </Layout>
     </>
   );
 }
