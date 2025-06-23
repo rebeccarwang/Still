@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
-import {LineChart, XAxis, YAxis, Line, Tooltip} from 'recharts';
+import {LineChart, XAxis, YAxis, Line, Tooltip, ResponsiveContainer} from 'recharts';
 import BASE_URL from '../config';
 import Layout from '../components/Layout'
 
@@ -64,49 +64,79 @@ export default function TrendsPage() {
   return (
     <>
     <Layout>
-    <h1>Trends</h1>
+    <div className='w-3/4 relative flex flex-col items-center'>
+      {!loading && !mostCommonTags && (
+        <>
+        <h3 className='italic sm:text-lg text-center pb-4 md:pb-20'>No tags were input in the past week.</h3>
+        </>
+      )}
+
+      {!loading && mostCommonTags && (
+      <>
+      {mostCommonTags[0].length === 1 && (
+        <>
+        <div className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-6'>
+          Your most frequent tag this week was {mostCommonTags[0].map(entry => `${entry} `)}
+        </div>
+        <div className='italic sm:text-lg text-center'>This was tagged {mostCommonTags[1]} time{mostCommonTags[1] !== 1 && 's'}</div>
+        </>)}
+      {mostCommonTags[0].length === 2 && (
+        <>
+        <div className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-6'>
+          Your most frequent tags this week were {mostCommonTags[0][mostCommonTags[0].length - 2]} and {mostCommonTags[0][mostCommonTags[0].length - 1]}
+        </div>
+        <div className='italic sm:text-lg text-center'>These were tagged {mostCommonTags[1]} time{mostCommonTags[1] !== 1 && 's'}</div>
+        </>)}
+      {mostCommonTags[0].length > 2 && (
+        <>
+        <div className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-6'>
+          Your most frequent tags this week were {mostCommonTags[0].slice(0, -1).map(entry => `${entry}, `)} and {mostCommonTags[0][mostCommonTags[0].length - 1]}
+        </div>
+        <div className='italic sm:text-lg text-center'>These were tagged {mostCommonTags[1]} time{mostCommonTags[1] !== 1 && 's'}</div>
+        </>)}
+      <br />
+    </>)}
+
     {!loading && trends.moodData.length === 0 && (
-      <h3>No moods were input in the past week.</h3>
+      <h3 className='italic sm:text-lg text-center'>No moods were input in the past week.</h3>
     )}
     {!loading && trends.moodData.length > 0 && (<>
-    <div>
-      <h2>Mood Trends</h2>
-      <LineChart width={400} height={200} data={trends.moodData.map(entry => ({createdAt: new Date(entry.createdAt).getTime(), mood: entry.mood}))}>
+    <div className='relative flex flex-col w-full items-center'>
+      <ResponsiveContainer width='75%' height={300}>
+      <LineChart data={trends.moodData.map(entry => ({createdAt: new Date(entry.createdAt).getTime(), mood: entry.mood}))}>
         <XAxis
           dataKey='createdAt'
           type='number'
           domain={['auto', 'auto']}
+          tick={false}
           scale='time'
-          label={{value: 'Date', position: 'insideBottom', offset: -5}}
-          tickFormatter={(datetime) => new Date(datetime).toISOString().split('T')[0]}
         />
         <YAxis
           domain={[0, 6]}
-          label={{value: 'Mood', position: 'insideLeft', offset: -5}}
+          tick={false}
+          label={{value: 'MOOD', stroke: '#D8693D', position: 'insideTopLeft', dx: 30, dy: 50, angle: -90}}
         />
         <Tooltip
           labelFormatter={(datetime) => {
             const date = new Date(datetime);
-            return date.toLocaleString();
+            return date.toLocaleString('en-us', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'});
           }}
         />
-        <Line type='monotone' dataKey='mood' stroke='#8884d8' />
+        <Line type='monotone' dataKey='mood' stroke='#D8693D' strokeWidth={3} dot={false}/>
       </LineChart>
+      </ResponsiveContainer>
+      <div className='relative w-3/4'>
+      <div className='absolute bottom-2 left-16 italic text-sm '>{new Date(trends.moodData[0].createdAt).toLocaleString('en-us', {day: 'numeric', month: 'short', year: 'numeric'})}</div>
+      <div className='absolute bottom-2 right-2 italic text-sm '>{new Date(trends.moodData[trends.moodData.length - 1].createdAt).toLocaleString('en-us', {day: 'numeric', month: 'short', year: 'numeric'})}</div>
+      </div>
     </div>
-    </>)}
-    <h2>Tag Trends</h2>
-    {!loading && !mostCommonTags && (
-      <h3>No tags were input in the past week.</h3>
-    )}
-    {!loading && mostCommonTags && (
-      <>
-      Your most frequent tags this week: {mostCommonTags[0].map(entry => `${entry} `)}
-      <br />
-      tagged {mostCommonTags[1]} time(s) each
     </>)}
     {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
     <br />
-    <button onClick={() => navigate(-1)}>Back</button>
+    <div className='w-3/4'>
+    <button className='absolute left-4 text-med-orange text-lg pt-4 md:pt-12 sm:text-2xl italic whitespace-nowrap' onClick={() => navigate(-1)}>← Back</button>
+    </div>
+    </div>
     </Layout>
     </>
   )

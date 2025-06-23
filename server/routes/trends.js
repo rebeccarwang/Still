@@ -42,7 +42,8 @@ router.get('/mood/:reflectionPref', isAuthenticated, async (req, res) => {
             tag: true
           }
         }
-      }
+      },
+      orderBy: {id: 'asc'}
     })
 
     let tagFrequencies = {};
