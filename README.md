@@ -2,6 +2,8 @@
 
 **Still** is a self-awareness toolkit designed to support users in checking in with their mood, revisiting their personal coping strategies and affirmations, and gently reflecting on their emotional state. Journaling is an optional tool within the app’s flexible, user-led flow.
 
+This project integrates full-stack development with cloud deployment and ML-powered sentiment analysis.
+
 ---
 
 ## Project Purpose & Inspiration
@@ -10,35 +12,45 @@ During my experience volunteering in mental health support, I have seen how it c
 
 ---
 
-##  Work in Progress
+## Features
 
-This project is **actively in development** and is not yet complete.
-It is intended as a personal learning project and a demonstration of my approach to user-centered design and privacy practices.
-
-Currently, the project includes:
-
-- Project scaffolding
-- Authentication and user management setup
-- Database schema for users and mood check-ins
-- Early-stage frontend with mood check-in UI
-- **User-defined preferences**: coping strategies, affirmations, and self-care items
-- **Branching prompts** tailored to mood
-- **Basic mood-based user flow**: initial flow logic
-- **Optional journaling** feature
-- **Sentiment analysis** of journal entries
-- **Mismatch detection**: highlight differences between mood and sentiment
+- **Frontend:** React.js, styled using Tailwind CSS for a responsive, clean design.
+- **Backend:** Node.js with Express.js.
+- **Database:** PostgreSQL with Prisma ORM for relational data modeling.
+- **Authentication:** Secure session-based authentication with bcrypt-hashed passwords.
+- **Adaptive Mood Check-In:** Scrollable mood selector triggers different user flows based on user input mood.
+- **Branching prompts**:
+  - Happy/Neutral moods → optional journaling and category tags
+  - Sad moods → choose from self-care, affirmations, coping tools, journaling, or “not today”
 - **Optional tags** for insights and trend tracking
-- **Weekly insights and trends**
+- **Personal Coping Strategies:** Users can define, update, and manage their own affirmations, coping tools, and self-care actions.
+- **Journaling with Sentiment Analysis:** Journal entries analyzed using a HuggingFace transformer model (`distilbert-base-uncased-finetuned-sst-2-english`), deployed as a FastAPI microservice on Azure Container Apps.
+- **Mismatch Detection:** Highlights discrepancies between reported mood and analyzed journal entry sentiment and gently reprompts the user for optional further reflection.
+- **API Security & Throttling:** ML microservice internally secured with an API key and rate limiting using slowapi (FastAPI middleware) to control request load.
+- **Weekly Insights:** Mood trends and most frequent tags from the past week displayed to help users reflect over time.
+- **Deployed Across Multiple Platforms:** Frontend hosted on Vercel, backend on Render, ML service on Azure Container Apps.
 
-Planned features:
+---
 
-- **Full UI polish and responsive design**
+## Tech Stack
+
+| Layer            | Technology                 |
+|------------------|-----------------------------|
+| Frontend         | React.js                   |
+| Frontend Styling | Tailwind CSS               |
+| Backend          | Node.js + Express          |
+| Database         | PostgreSQL + Prisma ORM    |
+| Authentication   | bcrypt + session-based auth|
+| NLP/ML Service   | FastAPI + Hugging Face Transformers |
+| Rate Limiting    | slowapi (FastAPI middleware) |
+| Deployment       | Vercel (frontend), Render (backend), Azure (microservice) |
 
 ---
 
 ## ⚠️ Important Disclaimers
 
 - This project is for **portfolio and demonstration purposes only**.
+- It is not intended for production use. Please do not use it as a replacement for professional mental health support.
 - It is **not licensed** for use, modification, or distribution.
 - It is **not intended as a substitute for professional mental health care, diagnosis, or treatment**.
 - This project was created in a **personal capacity** and is in no way to be construed as professional healthcare advice, treatment, or services.
@@ -57,36 +69,5 @@ Planned features:
 
 ---
 
-## Project Highlights
-
-- **Daily mood check-in** (selecting an emoji)
-- **User-defined preferences**: coping strategies, self-affirmations, and self-care items
-- **Branching prompts**:
-  - Happy/Neutral moods → optional journaling and category tags
-  - Sad moods → choose from self-care, affirmations, coping tools, journaling, or “not today”
-- **Sentiment analysis** of journal entries (planned)
-- **Mismatch detection** (planned)
-- **Optional tags** for insights and trend tracking (planned)
-- **Privacy-conscious** approach
-
----
-
-## Tech Stack
-
-- **Frontend:** React.js
-- **Backend:** Node.js with Express.js
-- **Database:** PostgreSQL (via Prisma)
-- **Authentication:** bcrypt, session
-- **Sentiment Analysis:** Planned using open-source libraries
-- **Deployment:** Planned with Vercel (frontend) and Railway (backend)
-
----
-
-
-## Important Note
-
-This project is for **portfolio demonstration only** and is not intended for production use. Please do not use it as a replacement for professional mental health support.
-
----
 
 **Thank you for exploring this personal project.**
