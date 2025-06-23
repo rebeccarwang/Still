@@ -16,7 +16,8 @@ router.get('/entries', isAuthenticated, async (req, res) => {
             tag: true
           }
         }
-      }
+      },
+      orderBy: {id: 'desc'}
     })
 
     const journalEntriesCondensed = journalEntries.map(entry => (
