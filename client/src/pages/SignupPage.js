@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import {useNavigate, Link} from 'react-router-dom';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import BASE_URL from '../config';
 
 
@@ -8,10 +8,21 @@ export default function SignupPage() {
   const {register, handleSubmit, formState: { errors }} = useForm();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
+  const [serverSuccess, setServerSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (serverSuccess) {
+      setTimeout(() => {
+        navigate('/');
+      }, 750);
+    }
+  })
+
 
   // handle user signup after form submission
   const onSubmit = async (data) => {
-    // console.log(data);
+    setIsSubmitting(true);
     try {
       const res = await fetch(`${BASE_URL}/api/users`, {
         method: 'POST',
@@ -23,7 +34,7 @@ export default function SignupPage() {
       )
 
       if (res.ok) {
-        navigate('/');
+        setServerSuccess(true);
       }
       else {
         const resJson = await res.json();
@@ -35,9 +46,13 @@ export default function SignupPage() {
       console.log('Error:', err);
       setServerError('Something went wrong- try again later');
     }
+    finally {
+      setIsSubmitting(false);
+    }
   }
   return (
     <>
+    {!serverSuccess && (<>
     <div className='min-h-screen flex items-center justify-center md:items-start md:pt-40'>
       <div className='space-y-4 border border-med-orange-200 border-opacity-25 p-4 rounded-xl w-96'>
         <h1 className='text-4xl font-semibold text-center text-med-orange mb-12'>Create an account</h1>
@@ -127,8 +142,24 @@ export default function SignupPage() {
         <div className='text-center text-sm text-med-orange'>
         Already have an account? Login <Link className='font-bold' to='/'>here</Link>
         </div>
+        {isSubmitting && (
+          <>
+          <div className='fixed inset-0 bg-white bg-opacity-30 z-40'></div>
+          <div className='relative'>
+          <div className='absolute right-4 text-sm sm:text-md italic whitespace-nowrap pt-10 z-50'>Creating account...</div>
+          </div>
+          </>
+        )}
       </div>
     </div>
+    </>)}
+    {serverSuccess && (
+      <>
+      <div className='h-screen flex items-center justify-center'>
+      <h2 className='text-med-orange text-xl sm:text-4xl pb-4 sm:pb-12'>Account created!</h2>
+      </div>
+      </>
+    )}
     </>
   );
 }
