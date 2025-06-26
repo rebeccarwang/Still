@@ -135,7 +135,7 @@ export default function SignupPage() {
           </div>
 
           <div>
-            <input type='submit' value='Sign Up' className='w-full h-12 bg-med-orange hover:opacity-85 text-white font-medium font-semibold py-2 px-4 rounded-xl' />
+            <input type='submit' value={isSubmitting? 'Creating account...': 'Sign Up'} className='w-full h-12 bg-med-orange hover:opacity-85 text-white font-medium font-semibold py-2 px-4 rounded-xl' />
           </div>
           {serverError && <p className='text-sm text-[#FF3131]'>{serverError}</p>}
         </form>
@@ -145,9 +145,9 @@ export default function SignupPage() {
         {isSubmitting && (
           <>
           <div className='fixed inset-0 bg-white bg-opacity-30 z-40'></div>
-          <div className='relative'>
+          {/* <div className='relative'>
           <div className='absolute right-4 text-sm sm:text-md italic whitespace-nowrap pt-10 z-50'>Creating account...</div>
-          </div>
+          </div> */}
           </>
         )}
       </div>

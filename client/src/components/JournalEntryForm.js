@@ -125,7 +125,10 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
     else {
       // console.log(tagsUser);
       let journalEntry = await postJournalEntry(journalText);
-      let ifTagsPosted = await postTags(tagsUser, journalEntry.journalEntryId);
+      let ifTagsPosted;
+      if (journalEntry) {
+        ifTagsPosted = await postTags(tagsUser, journalEntry.journalEntryId);
+      }
       if (journalEntry && ifTagsPosted) {
         setIsMismatch(journalEntry.mismatch);
         setIsSubmitted(true);
@@ -145,6 +148,7 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
         ></textarea>
         <br></br>
         <Tags tagsUser={tagsUser} setTagsUser={setTagsUser} />
+        {serverError && <p className='text-sm text-[#FF3131] pb-1 text-center'>{serverError}</p>}
         <button className='absolute right-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='submit'>Next →</button>
         {isSubmitting && (<>
         <div className='fixed inset-0 bg-white bg-opacity-30 z-40'></div>
@@ -152,7 +156,6 @@ export default function JournalEntryForm({isSubmitted, setIsSubmitted, isMismatc
         </>)}
         <button className='absolute left-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='button' onClick={() => navigate(-1)}>← Back</button>
       </form>
-      {serverError && <p className='text-sm text-[#FF3131]'>{serverError}</p>}
     </div>
     </>
   )

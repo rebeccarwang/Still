@@ -9,10 +9,12 @@ export default function LoginPage () {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
   const {login} = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // handle login logic after form submission
   const onSubmit = async (data) => {
     // console.log(data);
+    setIsSubmitting(true);
     try {
       const res = await fetch(`${BASE_URL}/api/auth/login`, {
         method: 'POST',
@@ -48,6 +50,9 @@ export default function LoginPage () {
     catch (err) {
       console.log('Error:', err);
       setServerError('Something went wrong- try again later');
+    }
+    finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -96,13 +101,16 @@ export default function LoginPage () {
           </div>
 
           <div>
-            <input type='submit' value='Login' className='w-full h-12 bg-med-orange hover:opacity-85 text-white font-medium font-semibold py-2 px-4 rounded-xl'/>
+            <input type='submit' value={isSubmitting? 'LOGGING IN...': 'LOGIN'} className='w-full h-12 bg-med-orange hover:opacity-85 text-white font-medium font-semibold py-2 px-4 rounded-xl'/>
           </div>
           {serverError && <p className='text-sm text-[#FF3131]'>{serverError}</p>}
         </form>
         <div className='text-center text-sm text-med-orange'>
           First time here? Create an account <Link className='font-bold' to='/signup'>here</Link>
         </div>
+        {isSubmitting && (
+        <div className='fixed inset-0 bg-white bg-opacity-30 z-40'></div>
+        )}
       </div>
     </div>
     </>
