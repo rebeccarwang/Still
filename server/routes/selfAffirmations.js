@@ -1,12 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const prisma = require('../utils/db');
+const rateLimit = require('express-rate-limit');
 
 const {isAuthenticated} = require('../middleware/auth');
 const {createPreferences} = require('../utils/preferences');
 
+
+// rate limiting
+function createLimiter() {
+  return rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 150,
+    message: JSON.stringify({error: 'Too many requests. Try again later.'}),
+    keyGenerator: (req) => {return req.session?.userId || req.ip}
+  })
+}
+
+
 // create new affirmation items
-router.post('/user', isAuthenticated, async (req, res) => {
+router.post('/user', createLimiter(), isAuthenticated, async (req, res) => {
   const [userSelectionExisting, userSelectionNew] = createPreferences(req.body.items);
 
     try {
@@ -57,7 +70,7 @@ router.post('/user', isAuthenticated, async (req, res) => {
 })
 
 // delete self-affirmation items
-router.post('/user/delete', isAuthenticated, async (req, res) => {
+router.post('/user/delete', createLimiter(), isAuthenticated, async (req, res) => {
   const delAffirmations = req.body.items;
 
   if (!delAffirmations || delAffirmations.length === 0) {
@@ -101,7 +114,7 @@ router.post('/user/delete', isAuthenticated, async (req, res) => {
 
 
 // get all user affirmations
-router.get('/user', isAuthenticated, async (req, res) => {
+router.get('/user', createLimiter(), isAuthenticated, async (req, res) => {
   try {
     const allUserAffirmations = await prisma.userSelfAffirmation.findMany({
       where: {userId: req.session.userId},
@@ -123,7 +136,7 @@ router.get('/user', isAuthenticated, async (req, res) => {
 
 
 // get all user affirmation content (full)
-router.get('/user/id-content', isAuthenticated, async (req, res) => {
+router.get('/user/id-content', createLimiter(), isAuthenticated, async (req, res) => {
   try {
     const allUserAffirmations = await prisma.userSelfAffirmation.findMany({
       where: {userId: req.session.userId},
@@ -146,7 +159,7 @@ router.get('/user/id-content', isAuthenticated, async (req, res) => {
 
 
 // get all app-wide, public self-affirmation items
-router.get('/public', async (req, res) => {
+router.get('/public', createLimiter(), async (req, res) => {
 
   try {
     const allPublicSelfAffirmation = await prisma.selfAffirmation.findMany({

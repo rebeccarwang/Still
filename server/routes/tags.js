@@ -1,11 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const prisma = require('../utils/db');
+const rateLimit = require('express-rate-limit');
 
 const {isAuthenticated} = require('../middleware/auth');
 
+
+// rate limiting
+function createLimiter() {
+  return rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 150,
+    message: JSON.stringify({error: 'Too many tag requests. Try again later.'}),
+    keyGenerator: (req) => {return req.session?.userId || req.ip}
+  })
+}
+
+
+function createViewLimiter() {
+  return rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 300,
+    message: JSON.stringify({error: 'Too many requests. Try again later.'}),
+    keyGenerator: (req) => {return req.session?.userId || req.ip}
+  })
+}
+
+
 // get all app-wide, public tag items
-router.get('/public', async (req, res) => {
+router.get('/public', createViewLimiter(), async (req, res) => {
 
   try {
     const allPublicTags = await prisma.tag.findMany({
@@ -24,7 +47,7 @@ router.get('/public', async (req, res) => {
 
 
 // posts new tags
-router.post('/journal-entry', isAuthenticated, async (req, res) => {
+router.post('/journal-entry', createLimiter(), isAuthenticated, async (req, res) => {
   const {tagsUser, journalEntryId} = req.body;
 
   // checks if there are tags to be added
@@ -73,7 +96,7 @@ router.post('/journal-entry', isAuthenticated, async (req, res) => {
 
 
 // posts new tags
-router.post('/mood', isAuthenticated, async (req, res) => {
+router.post('/mood', createLimiter(), isAuthenticated, async (req, res) => {
   const {tagsUser, moodId} = req.body;
   const moodIdInt = parseInt(moodId);
 

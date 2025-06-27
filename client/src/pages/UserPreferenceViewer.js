@@ -15,6 +15,7 @@ export default function UserPreferenceViewer() {
   const prompts = {'affirmations': 'Reminder List', 'self-care': 'Things that help me recharge', 'coping-strategies': 'Things that help me in difficult moments'};
   // const prompt = prompts[promptType];
   const navigate = useNavigate();
+  const [serverError, setServerError] = useState('');
 
   useEffect(() => {
     const fetchUserPreference = async () => {
@@ -26,12 +27,17 @@ export default function UserPreferenceViewer() {
           credentials: 'include',
         });
 
+        const resUserPreferenceJson = await resUserPreference.json();
+
         // sets list of publicSelfCare options
         if (resUserPreference.ok) {
-          const resUserPreferenceJson = await resUserPreference.json();
           // console.log("got here");
           setUserPreference(resUserPreferenceJson);
           // console.log(resUserPreferenceJson);
+        }
+
+        else {
+          setServerError(resUserPreferenceJson.error || 'Something went wrong');
         }
       }
 
@@ -82,6 +88,16 @@ export default function UserPreferenceViewer() {
     <br></br>
     </div>
     <button className='absolute left-4 text-med-orange text-lg pt-4 md:pt-12 sm:text-2xl italic whitespace-nowrap' type='button' onClick={() => navigate(-1)}>← Back</button>
+    </>
+    )
+    }
+    {!loading && !userPreference &&
+    (
+    <>
+    <div className='flex justify-center'>
+      <p className='text-red-500 text-center pt-12'>{serverError}</p>
+    </div>
+    <button className='absolute left-4 text-med-orange text-lg pt-12 md:pt-28 sm:text-2xl italic whitespace-nowrap' type='button' onClick={() => navigate(-1)}>← Back</button>
     </>
     )
     }

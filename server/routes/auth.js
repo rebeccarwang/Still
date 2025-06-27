@@ -2,10 +2,29 @@ const express = require('express');
 const router = express.Router();
 const prisma = require('../utils/db');
 const bcrypt = require('bcrypt');
+const rateLimit = require('express-rate-limit');
 
 const {isAuthenticated} = require('../middleware/auth');
+
+
+// rate limiting
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: JSON.stringify({error: 'Too many unsuccessful login attempts. Please try again later.'}),
+  skipSuccessfulRequests: true
+})
+
+
+const sessionLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 1000,
+  message: JSON.stringify({error: 'Too many requests. Please try again later.'})
+})
+
+
 // login
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter, async (req, res) => {
   const {email, password} = req.body;
 
   // check user inputs email and password
@@ -49,7 +68,7 @@ router.post('/logout', (req, res, next) => {
 
 
 // session info
-router.get('/session', isAuthenticated, (req, res) => {
+router.get('/session', sessionLimiter, isAuthenticated, (req, res) => {
   return res.status(200).json({
     isLoggedIn: true,
     firstName: req.session.firstName,

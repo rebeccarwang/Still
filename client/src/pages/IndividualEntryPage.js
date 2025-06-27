@@ -68,7 +68,7 @@ export default function IndividualEntryPage() {
     </div>
     </div>
     </>)}
-    {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
+    {serverError && <p className='text-red-500 text-center'>{serverError}</p>}
     <br />
     </div>
     <div className='relative w-3/4'>

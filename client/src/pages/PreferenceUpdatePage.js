@@ -12,6 +12,8 @@ export default function PreferenceUpdatePage() {
   const [loading, setLoading] = useState(true);
   const [serverSuccess, setServerSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDataReturned, setDataReturned] = useState(true);
+  const [dataError, setDataError] = useState('');
 
   const [publicAffirmations, setPublicAffirmations] = useState();
   const [userAffirmations, setUserAffirmations] = useState([]);
@@ -69,11 +71,16 @@ export default function PreferenceUpdatePage() {
       } else {
         setPublicCoping(null);
       }
+      if (!resSelfCare.ok || !resAffirmations.ok || !resCoping.ok) {
+        setDataReturned(false);
+      }
     } catch (err) {
       console.log('Error:', err);
       setPublicAffirmations(null);
       setPublicCoping(null);
       setPublicSelfCare(null);
+      setDataReturned(false);
+      setDataError(err.message || 'Sometihng went wrong- try again later.');
     }
   };
 
@@ -126,6 +133,11 @@ export default function PreferenceUpdatePage() {
       else {
         setUserAffirmations(null);
       }
+
+      if (!resSelfCareUser.ok || !resCopingUser.ok || !resAffirmationsUser.ok) {
+        setDataReturned(false);
+        setDataError('Something went wrong- try again later');
+      }
     }
 
     catch (err) {
@@ -133,7 +145,8 @@ export default function PreferenceUpdatePage() {
       setUserSelfCare(null);
       setUserAffirmations(null);
       setUserCoping(null);
-
+      setDataReturned(false);
+      setDataError(err.message || 'Something went wrong- try again later');
     }
   };
 
@@ -287,7 +300,7 @@ export default function PreferenceUpdatePage() {
       <div>
       <ThemeProvider theme={theme}>
       <h2 className='text-med-orange sm:text-xl md:pb-3'>What helps you recharge?</h2>
-      {!loading && (
+      {!loading && isDataReturned && (
         <Autocomplete
         multiple
         id="selected-self-care-items"
@@ -318,7 +331,7 @@ export default function PreferenceUpdatePage() {
 
       {/* user selects and/or writes coping strategies */}
       <h2 className='text-med-orange sm:text-xl md:pb-3'>What helps you get through difficult or overwhelming moments?</h2>
-      {!loading && (
+      {!loading && isDataReturned && (
         <Autocomplete
         multiple
         id="selected-coping-strategies"
@@ -349,7 +362,7 @@ export default function PreferenceUpdatePage() {
 
       {/* user selects and/or writes affirmations */}
       <h2 className='text-med-orange sm:text-xl md:pb-3'>Are there any words, reminders, or beliefs that help you when you're struggling or feeling unsure?</h2>
-      {!loading && (
+      {!loading && isDataReturned && (
         <Autocomplete
         multiple
         id="selected-affirmations"
@@ -384,7 +397,7 @@ export default function PreferenceUpdatePage() {
       <button className='absolute left-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='button' onClick={() => navigate(-1)}>← Back</button>
       <button className='absolute right-4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap' type='submit' disabled={isSubmitting}>Submit →</button>
     </form>
-    {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
+    {serverError && isDataReturned && <p className='text-red-500 text-center pt-12'>{serverError}</p>}
     {isSubmitting && !serverSuccess && (
       <>
       <div className='fixed inset-0 bg-white bg-opacity-30 z-40'></div>
@@ -397,6 +410,7 @@ export default function PreferenceUpdatePage() {
       <div className='absolute right-4 text-sm sm:text-md italic whitespace-nowrap pt-10 z-50'>Preferences saved!</div>
       </>
     )}
+    {!isDataReturned && <p className='text-red-500 text-center pt-12'>{dataError}</p>}
     </div>
     </Layout>
     </>

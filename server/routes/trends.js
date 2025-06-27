@@ -1,11 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const prisma = require('../utils/db');
+const rateLimit = require('express-rate-limit');
 
 const {isAuthenticated} = require('../middleware/auth');
 
+
+// rate limiting
+function createLimiter() {
+  return rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 150,
+    message: JSON.stringify({error: 'Too many requests. Try again later.'}),
+    keyGenerator: (req) => {return req.session?.userId || req.ip}
+  })
+}
+
+
 // get mood trends
-router.get('/mood/:reflectionPref', isAuthenticated, async (req, res) => {
+router.get('/mood/:reflectionPref', createLimiter(), isAuthenticated, async (req, res) => {
   const {reflectionPref} = req.params;
 
   // checks if reflectionPref value is valid

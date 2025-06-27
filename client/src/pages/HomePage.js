@@ -7,6 +7,7 @@ import {Chip} from '@mui/material';
 export default function HomePage() {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // redirects user to /check-in page if user has not yet made a mood entry during this session
   useEffect(() => {
@@ -16,10 +17,17 @@ export default function HomePage() {
           credentials: 'include'
         });
 
-        if (!res.ok) {
+        if (res.status === 429) {
+          const resJson = await res.json();
+          setErrorMessage(resJson.error || 'Something went wrong');
+        }
+
+        else if (!res.ok) {
           navigate('/check-in');
         }
-        setLoading(false);
+        else {
+          setLoading(false);
+        }
       }
       catch (err) {
         console.log('Error:', err);
@@ -33,7 +41,7 @@ export default function HomePage() {
   return (
     <>
     <Layout>
-    {!isLoading &&
+    {!isLoading && !errorMessage &&
       (<>
         <h1 className='text-med-orange text-xl sm:text-4xl text-center p-4 sm:p-8'>What would you like to do today?</h1>
         <div className='grid grid-cols-4 gap-x-2 gap-y-3 pt-2'>
@@ -92,6 +100,7 @@ export default function HomePage() {
         </div>
       </>
       )}
+      {errorMessage && <p className='absolute text-red-500 text-center'>{errorMessage}</p>}
     </Layout>
     </>
   )

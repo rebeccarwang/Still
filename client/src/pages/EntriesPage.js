@@ -59,7 +59,7 @@ export default function EntriesPage() {
       </div>
       </>
       )}
-      {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
+      {serverError && <p className='text-red-500 text-center'>{serverError}</p>}
       <br />
       <button className='w-3/4 text-med-orange text-lg sm:text-2xl italic whitespace-nowrap text-left' type='button' onClick={() => navigate(-1)}>← Back</button>
     </Layout>

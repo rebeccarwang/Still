@@ -65,13 +65,13 @@ export default function TrendsPage() {
     <>
     <Layout>
     <div className='w-3/4 relative flex flex-col items-center'>
-      {!loading && !mostCommonTags && (
+      {!loading && !mostCommonTags && !serverError && (
         <>
         <h3 className='italic sm:text-lg text-center pb-4 md:pb-20'>No tags were input in the past week.</h3>
         </>
       )}
 
-      {!loading && mostCommonTags && (
+      {!loading && mostCommonTags && !serverError && (
       <>
       {mostCommonTags[0].length === 1 && (
         <>
@@ -97,10 +97,10 @@ export default function TrendsPage() {
       <br />
     </>)}
 
-    {!loading && trends.moodData.length === 0 && (
+    {!loading && trends && trends.moodData.length === 0 && !serverError && (
       <h3 className='italic sm:text-lg text-center'>No moods were input in the past week.</h3>
     )}
-    {!loading && trends.moodData.length > 0 && (<>
+    {!loading && trends && trends.moodData.length > 0 && !serverError && (<>
     <div className='relative flex flex-col w-full items-center'>
       <ResponsiveContainer width='75%' height={300}>
       <LineChart data={trends.moodData.map(entry => ({createdAt: new Date(entry.createdAt).getTime(), mood: entry.mood}))}>
@@ -131,7 +131,7 @@ export default function TrendsPage() {
       </div>
     </div>
     </>)}
-    {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
+    {serverError && <p className='text-red-500 text-center pb-12'>{serverError}</p>}
     <br />
     <div className='w-3/4'>
     <button className='absolute left-4 text-med-orange text-lg pt-4 md:pt-12 sm:text-2xl italic whitespace-nowrap' onClick={() => navigate(-1)}>← Back</button>

@@ -124,17 +124,23 @@ export default function PreferenceSetupPage() {
       });
       console.log('messages', selfCareAdditions.status, copingAdditions.status, affirmationAdditions.status);
       if (selfCareAdditions.ok && copingAdditions.ok && affirmationAdditions.ok) {
-        await fetch(`${BASE_URL}/api/users/onboarding-complete`, {
+        const onboardingComplete = await fetch(`${BASE_URL}/api/users/onboarding-complete`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },
           credentials: 'include'
         });
-        setShowConfirmation(true);
-        setTimeout(() => {
-          navigate('/check-in');
-        }, 750);
+        if (onboardingComplete.ok) {
+          setShowConfirmation(true);
+          setTimeout(() => {
+            navigate('/check-in');
+          }, 750);
+        }
+        else {
+          const onboardingCompleteJson = await onboardingComplete.json();
+          setServerError(onboardingCompleteJson.error || 'Something went wrong');
+        }
       }
       else {
         setServerError('Something went wrong');

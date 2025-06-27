@@ -5,6 +5,7 @@ import BASE_URL from '../config';
 export default function Tags({tagsUser, setTagsUser}) {
   const [loading, setLoading] = useState(true);
   const [tagsPublic, setTagsPublic] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const fetchPublicTagOptions = async () => {
@@ -13,17 +14,20 @@ export default function Tags({tagsUser, setTagsUser}) {
           credentials: 'include',
         });
 
+        const resTagsPublicJson = await resTagsPublic.json();
+
         // sets list of public tags options
         if (resTagsPublic.ok) {
-          const resTagsPublicJson = await resTagsPublic.json();
           setTagsPublic(resTagsPublicJson);
         } else {
           setTagsPublic(null);
+          setErrorMessage(resTagsPublicJson.error || 'Something went wrong');
         }
 
       } catch (err) {
         console.log('Error:', err);
         setTagsPublic(null);
+        setErrorMessage('Something went wrong');
       } finally {
         setLoading(false);
       }
@@ -47,7 +51,7 @@ export default function Tags({tagsUser, setTagsUser}) {
 
   return (
     <>
-    {!loading && (
+    {!loading && !errorMessage && (
       <>
       <div className='grid [grid-template-columns:repeat(auto-fit,125px)] justify-center gap-x-2 gap-y-3 pt-4'>{tagsPublic.map(item =>
       <Chip
@@ -67,6 +71,11 @@ export default function Tags({tagsUser, setTagsUser}) {
       </>
     )}
     <br></br>
+    {!loading && errorMessage && (
+      <>
+      <p className='text-red-500 text-center'>{errorMessage}</p>
+      </>
+    )}
     </>
   )
 }

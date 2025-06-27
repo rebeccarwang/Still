@@ -1,12 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const prisma = require('../utils/db');
+const rateLimit = require('express-rate-limit');
 
 const {isAuthenticated} = require('../middleware/auth');
 const bcrypt = require('bcrypt');
 
+
+// rate limiting
+const signupLimiter = rateLimit({
+  windowMs: 60 * 60 * 60,
+  max: 3,
+  message: JSON.stringify({error: 'Too many signup requests. Try again later.'}),
+})
+
+
+// rate limiting
+function createLimiter() {
+  return rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 10,
+    message: JSON.stringify({error: 'Too many requests. Try again later.'}),
+    keyGenerator: (req) => {return req.session?.userId || req.ip}
+  })
+}
+
+
 // create new user
-router.post('/', async (req, res) => {
+router.post('/', signupLimiter, async (req, res) => {
   const {email, password, firstName, lastName} = req.body;
 
   // check that all required input fields exist
@@ -43,7 +64,7 @@ router.post('/', async (req, res) => {
 
 
 // set user's hasCompletedOnboarding attribute to true
-router.patch('/onboarding-complete', isAuthenticated, async (req, res) => {
+router.patch('/onboarding-complete', createLimiter(), isAuthenticated, async (req, res) => {
   try {
     await prisma.user.update({
       where: {id: req.session.userId},
